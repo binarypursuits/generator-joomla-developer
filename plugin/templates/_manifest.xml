@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" version="3.3" method="upgrade" group="<%= type %>">
+	<name>plg_<%= type %>_<%= plugin %></name>
+	<author><%= author %></author>
+	<creationDate><%= created %></creationDate>
+	<copyright><%= copyright %></copyright>
+	<license><%= license %></license>
+	<authorEmail><%= email %></authorEmail>
+	<authorUrl><%= website %></authorUrl>
+	<version><%= version %></version>
+	<description>MOD_<%= uppercase %>_XML_DESCRIPTION</description>
+
+	<files>
+		<filename plugin="<%= plugin %>"><%= plugin %>.php</filename>
+		<filename>index.html</filename>
+		<filename>helpers</filename>
+		<folder>tmpl</folder>
+	</files><% if (languagefile === true) { %>
+
+	<languages>
+		<language tag="<%= languagecode %>"><%= languagecode %>.plg_<%= type %>_<%= plugin %>.ini</language>
+		<language tag="<%= languagecode %>"><%= languagecode %>.plg_<%= type %>_<%= plugin %>.ini.sys</language>
+	</languages><% } %>
+
+	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_WRAPPER" />
+
+	<config>
+		<fields name="params">
+		</fields>
+	</config>
+</extension>
+
+

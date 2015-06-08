@@ -1,0 +1,31 @@
+{
+  "name": "generator-joomla-developer",
+  "version": "0.0.0",
+  "homepage": "https://github.com/brian-bolli/generator-joomla-developer",
+  "authors": [
+    "Brian Bolli <brian.bolli@arctg.com>"
+  ],
+  "main": "index.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "joomla",
+    "yo",
+    "generator"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "1.11.0",
+    "bootstrap": "2.3.2",
+    "chosen-build": "~1.1.0",
+    "ajax-chosen": "~1.0.1"
+  }
+}

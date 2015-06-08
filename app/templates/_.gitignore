@@ -1,0 +1,66 @@
+# OSX
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ 
+# Windows
+Thumbs.db
+Desktop.ini
+ 
+# PHPStorm
+.idea/
+
+# Sublime Text
+*.sublime*
+sftp-config.json
+ 
+# Eclipse
+.buildpath
+.project
+/.settings/*
+ 
+# Netbeans (custom)
+.netbeans/*
+/nbproject/*
+ 
+# Temp files
+*.tmp
+*.bak
+*.swp
+*~.nib
+*~
+
+# Node & NPM
+/node_modules/*
+
+# Bower
+/bower_components/*
+ 
+# Phing build script
+build.properties
+ 
+# Packages #
+*.zip
+*.tar.*
+ 
+# Composer
+composer.lock
+/vendor
+ 
+# Test related files
+/tests/system/servers/configdef.php
+/tests/system/webdriver/tests/logs/
+/tests/acceptance.suite.yml
+codecept.phar
+ 
+# Joomla
+/administrator/cache/*
+/cache/*
+/tmp/*
+/logs/*
+
+# Never ignore
+!.gitignore
+!index.html
+!index.php

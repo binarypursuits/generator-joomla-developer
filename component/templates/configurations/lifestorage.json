@@ -1,0 +1,66 @@
+[
+	{
+		"listview": {
+			"formal" : "Facilities",
+			"camelcase": "Facilities",
+			"lowercase": "facilities",
+			"uppercase": "FACILITIES",
+			"default_view" : true
+		},
+		"detailview":{
+			"formal" : "Facility",
+			"camelcase": "Facility",
+			"lowercase": "facility",
+			"uppercase": "FACILITY",
+			"default_view" : false
+		},
+		"db": {
+			"fields": {
+				"categories": true,
+				"publish": true,
+				"timestamp": true,
+				"urls": true,
+				"metadata": true,
+				"description": true,
+				"params": true,
+				"images": true,
+				"language": true,
+				"tags": true,
+				"versions": true,
+				"ordering": true
+			}
+		},
+		"acl": false,
+		"submenu" : true
+	},
+	{
+		"listview": {
+			"camelcase": "Units",
+			"lowercase": "units",
+			"uppercase": "UNITS"
+		},
+		"detailview":{
+			"camelcase": "Unit",
+			"lowercase": "unit",
+			"uppercase": "UNIT"
+		},
+		"db": {
+			"fields": {
+				"categories": true,
+				"publish": true,
+				"timestamp": true,
+				"urls": true,
+				"metadata": true,
+				"description": true,
+				"params": true,
+				"images": true,
+				"language": true,
+				"tags": true,
+				"versions": true,
+				"ordering": true
+			}
+		},
+		"acl": false,
+		"submenu" : true
+	}
+]

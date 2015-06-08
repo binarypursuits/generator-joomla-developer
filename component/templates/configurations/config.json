@@ -1,0 +1,36 @@
+[
+	{
+		"listview": {
+			"formal" : "Applications",
+			"camelcase": "Applications",
+			"lowercase": "applications",
+			"uppercase": "APPLICATIONS",
+			"default_view" : true
+		},
+		"detailview":{
+			"formal" : "Application",
+			"camelcase": "Application",
+			"lowercase": "application",
+			"uppercase": "APPLICATION",
+			"default_view" : false
+		},
+		"db": {
+			"fields": {
+				"categories": true,
+				"publish": true,
+				"timestamp": true,
+				"urls": false,
+				"metadata": false,
+				"description": false,
+				"params": true,
+				"images": false,
+				"language": false,
+				"tags": false,
+				"versions": false,
+				"ordering": false
+			}
+		},
+		"acl": false,
+		"submenu" : true
+	}
+]
