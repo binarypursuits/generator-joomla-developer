@@ -31,204 +31,202 @@ module.exports = yeoman.generators.Base.extend({
 
 	prompting: function () {
 
-		var done = this.async();
+            var done = this.async();
 
-		this.log(yosay('Joomla Instance Information'));
+            this.log(yosay('Joomla Instance Information'));
 
-		var prompts =
-		[
-			{
-				type : 'input',
-				name : 'name',
-				message : 'Enter name for this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'version',
-				message : 'Enter version for this Joomla instance:',
-				"default": '0.1.0'
-			},
-			{
-				type : 'input',
-				name : 'websiteEmail',
-				message : 'Enter administrator\'s email for this Joomla instance:',
-				store: true
-			},
-			{
-				type : 'input',
-				name : 'websitePassword',
-				message : 'Enter administrator\'s password for this Joomla instance:',
-				store: true
-			},
-			{
-				type : 'input',
-				name : 'url',
-				message : 'Enter local URL for development off this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'repositoryName',
-				message : 'Enter Git Repository Name Joomla Repository you wish to clone for your development instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'joomlaFolder',
-				message : 'Enter sub-folder name Joomla CMS files will be placed:',
-				store : true,
-				"default" : 'webroot'
-			},
-			{
-				type : 'input',
-				name : 'repositoryUrl',
-				message : 'Enter Git Repository URL for this Joomla development instance:',
-				store : true
-			},
-			{
-				type : 'confirm',
-				name : 'repositoryExisting',
-				message : 'Is there already a Joomla CMS code base in the above repository:',
-				"default": false,
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'author',
-				message : 'Enter default author for development on this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'copyright',
-				message : 'Enter default copyright for development on this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'license',
-				message : 'Enter default license for development on this Joomla instance:',
-				"default": 'GNU General Public License version 2 or later; see LICENSE.txt',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'email',
-				message : 'Enter default email for development on this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'website',
-				message : 'Enter local URL for development off this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'languagecode',
-				message : 'Enter default language code for development on this Joomla instance:',
-				"default": 'en-GB',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'db_user',
-				message : 'Enter database user for this Joomla instance:',
-				store: true
-			},
-			{
-				type : 'input',
-				name : 'db_password',
-				message : 'Enter database password for this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'db_host',
-				message : 'Enter database url for this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'db_database',
-				message : 'Enter database name for this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'db_prefix',
-				message : 'Enter database prefix for this Joomla instance:',
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'ftp_url',
-				message : 'Enter ftp url to deploy this Joomla instance:',
-				"default" : "",
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'ftp_user',
-				message : 'Enter ftp username to deploy this Joomla instance:',
-				"default" : "",
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'ftp_password',
-				message : 'Enter ftp password to deploy this Joomla instance:',
-				"default" : "",
-				store : true
-			},
+            var prompts =
+            [
+                {
+                    type : 'input',
+                    name : 'name',
+                    message : 'Enter name for this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'version',
+                    message : 'Enter version for this Joomla instance:',
+                    "default": '0.1.0'
+                },
+                {
+                    type : 'input',
+                    name : 'websiteEmail',
+                    message : 'Enter administrator\'s email for this Joomla instance:',
+                    store: true
+                },
+                {
+                    type : 'input',
+                    name : 'websitePassword',
+                    message : 'Enter administrator\'s password for this Joomla instance:',
+                    store: true
+                },
+                {
+                    type : 'input',
+                    name : 'url',
+                    message : 'Enter local URL for development off this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'repositoryName',
+                    message : 'Enter Git Repository Name Joomla Repository you wish to clone for your development instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'joomlaFolder',
+                    message : 'Enter sub-folder name Joomla CMS files will be placed:',
+                    store : true,
+                    "default" : 'webroot'
+                },
+                {
+                    type : 'input',
+                    name : 'repositoryUrl',
+                    message : 'Enter Git Repository URL for this Joomla development instance:',
+                    store : true
+                },
+                {
+                    type : 'confirm',
+                    name : 'repositoryExisting',
+                    message : 'Is there already a Joomla CMS code base in the above repository:',
+                    "default": false,
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'author',
+                    message : 'Enter default author for development on this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'copyright',
+                    message : 'Enter default copyright for development on this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'license',
+                    message : 'Enter default license for development on this Joomla instance:',
+                    "default": 'GNU General Public License version 2 or later; see LICENSE.txt',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'email',
+                    message : 'Enter default email for development on this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'website',
+                    message : 'Enter local URL for development off this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'languagecode',
+                    message : 'Enter default language code for development on this Joomla instance:',
+                    "default": 'en-GB',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'db_user',
+                    message : 'Enter database user for this Joomla instance:',
+                    store: true
+                },
+                {
+                    type : 'input',
+                    name : 'db_password',
+                    message : 'Enter database password for this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'db_host',
+                    message : 'Enter database url for this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'db_database',
+                    message : 'Enter database name for this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'db_prefix',
+                    message : 'Enter database prefix for this Joomla instance:',
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'ftp_url',
+                    message : 'Enter ftp url to deploy this Joomla instance:',
+                    "default" : "",
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'ftp_user',
+                    message : 'Enter ftp username to deploy this Joomla instance:',
+                    "default" : "",
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'ftp_password',
+                    message : 'Enter ftp password to deploy this Joomla instance:',
+                    "default" : "",
+                    store : true
+                }
+            ];
 
-		];
+            this.prompt(prompts, function (props) {
+                props.components = [];
+                props.modules = [];
+                props.plugins = [];
+                props.templates = [];
+                props.libraries = [];
+                props.packages = [];
+                props.submodules = [];
 
-		this.prompt(prompts, function (props) {
-			props.components = [];
-			props.modules = [];
-			props.plugins = [];
-			props.templates = [];
-			props.libraries = [];
-			props.packages = [];
-			props.submodules = [];
+                props.path = this.destinationPath().replace(/\\/g, "\\\\").replace(" ","\\ ");
+                props.packageName = props.name.replace(/\s+/g, '-').toLowerCase();
 
-			props.path = this.destinationPath().replace(/\\/g, "\\\\").replace(" ","\\ ");
-			props.packageName = props.name.replace(/\s+/g, '-').toLowerCase();
+                this.websiteEmail = props.websiteEmail;
+                this.websitePassword = props.websitePassword;
 
-			this.websiteEmail = props.websiteEmail;
-			this.websitePassword = props.websitePassword;
+                this.website = props.website;
+                this.url = props.url;
+                this.path = props.path;
+                this.repositoryUrl = props.repositoryUrl;
+                this.joomlaFolder = props.repositoryName;
+                this.repositoryExisting = props.repositoryExisting;
+                this.joomlaFolder = props.joomlaFolder;
+                this.name = props.name;
+                this.version = props.version;
 
-			this.website = props.website;
-			this.url = props.url;
-			this.path = props.path;
-			this.repositoryUrl = props.repositoryUrl;
-			this.joomlaFolder = props.repositoryName;
-			this.repositoryExisting = props.repositoryExisting;
-			this.joomlaFolder = props.joomlaFolder;
-			this.name = props.name;
-			this.version = props.version;
+                this.db_user = props.db_user;
+                this.db_password = props.db_password;
+                this.db_host = props.db_host;
+                this.db_database = props.db_database;
+                this.db_prefix = props.db_prefix;
 
-			this.db_user = props.db_user;
-			this.db_password = props.db_password;
-			this.db_host = props.db_host;
-			this.db_database = props.db_database;
-			this.db_prefix = props.db_prefix;
+                this.ftp_url = props.ftp_url;
+                this.ftp_user = props.ftp_user;
+                this.ftp_password = props.ftp_password;
 
-			this.ftp_url = props.ftp_url;
-			this.ftp_user = props.ftp_user;
-			this.ftp_password = props.ftp_password;
+                var str = random.string(20);
 
-			var str = random.string(20);
+                props.secret = md5(str);
 
-			props.secret = md5(str);
+                this.config.defaults(props);
 
-			this.config.defaults(props);
-
-			done();
-		}.bind(this));
-
+                done();
+            }.bind(this));
 	},
 
 	writing: {
@@ -241,38 +239,38 @@ module.exports = yeoman.generators.Base.extend({
 			var ioFileOperations = function(src, dest, tpl)
 			{
 
-				if (tpl)
-				{
-					this.fs.copyTpl(
-						this.templatePath(src),
-						this.destinationPath(dest),
-						params
-					);
-				}
-				else
-				{
-					this.fs.copy(
-						this.templatePath(src),
-						this.destinationPath(dest)
-					);
-				}
+                            if (tpl)
+                            {
+                                this.fs.copyTpl(
+                                    this.templatePath(src),
+                                    this.destinationPath(dest),
+                                    params
+                                );
+                            }
+                            else
+                            {
+                                this.fs.copy(
+                                    this.templatePath(src),
+                                    this.destinationPath(dest)
+                                );
+                            }
 
-			}.bind(this);;
+			}.bind(this);
 
 			async.series([
-					ioFileOperations('_package.json', 'package.json', true),
-					ioFileOperations('_bower.json', 'bower.json', true),
-					ioFileOperations('_gruntfile.js', 'gruntfile.js', true),
-					ioFileOperations('_.ftppass', '.ftppass', true),
-					ioFileOperations('_.gitignore', '.gitignore'),
-					ioFileOperations('tasks/**/*', 'tasks/', false),
-					ioFileOperations('index.html', 'database/index.html', false),
-					ioFileOperations('index.html', 'build/index.html', false),
-					ioFileOperations('editorconfig', '.editorconfig', false),
-					ioFileOperations('jshintrc', '.jshintrc', false),
-					ioFileOperations('_configuration.php', this.joomlaFolder + '/configuration.php', true),
-					ioFileOperations('_htaccess.txt', this.joomlaFolder + '/.htaccess', false),
-					ioFileOperations('README.md', 'README.md', false)
+                                    ioFileOperations('_package.json', 'package.json', true),
+                                    ioFileOperations('_bower.json', 'bower.json', true),
+                                    ioFileOperations('_gruntfile.js', 'gruntfile.js', true),
+                                    ioFileOperations('_.ftppass', '.ftppass', true),
+                                    ioFileOperations('_.gitignore', '.gitignore'),
+                                    ioFileOperations('tasks/**/*', 'tasks/', false),
+                                    ioFileOperations('index.html', 'database/index.html', false),
+                                    ioFileOperations('index.html', 'build/index.html', false),
+                                    ioFileOperations('editorconfig', '.editorconfig', false),
+                                    ioFileOperations('jshintrc', '.jshintrc', false),
+                                    ioFileOperations('_configuration.php', this.joomlaFolder + '/configuration.php', true),
+                                    ioFileOperations('_htaccess.txt', this.joomlaFolder + '/.htaccess', false),
+                                    ioFileOperations('README.md', 'README.md', false)
 				]);
 
 			done();
@@ -291,16 +289,17 @@ module.exports = yeoman.generators.Base.extend({
 				var initializeGitRepository = function()
 				{
 
-					cp.exec('git init', { cwd: this.path }, function(err, stdout, stderr) {
+                                    cp.exec('git init', { cwd: this.path }, function(err, stdout, stderr) {
 
-						if (err)
-						{
-							throw err;
-						}
+                                        if (err)
+                                        {
+                                            this.log(err);
+                                            return false;
+                                        }
 
-						this.log('Initialized GIT repository...');
+                                        this.log('Initialized GIT repository...');
 
-					}.bind(this));
+                                    }.bind(this));
 
 				}.bind(this);
 
@@ -310,7 +309,8 @@ module.exports = yeoman.generators.Base.extend({
 
 						if (err)
 						{
-							throw err;
+                                                    this.log(err);
+                                                    return false;
 						}
 
 						this.log('Added remote origin...');
@@ -325,7 +325,8 @@ module.exports = yeoman.generators.Base.extend({
 
 						if (err)
 						{
-							throw err;
+                                                    this.log(err);
+                                                    return false;
 						}
 
 						this.log('Committed README.md...');
@@ -341,7 +342,8 @@ module.exports = yeoman.generators.Base.extend({
 
 						if (err)
 						{
-							throw err;
+                                                    this.log(err);
+                                                    return false;
 						}
 
 						this.log('Pushed README.md to origin...');
@@ -357,7 +359,8 @@ module.exports = yeoman.generators.Base.extend({
 
 						if (err)
 						{
-							throw err;
+                                                    this.log(err);
+                                                    return false;
 						}
 
 					}.bind(this));
@@ -383,87 +386,85 @@ module.exports = yeoman.generators.Base.extend({
 
 				if (err)
 				{
-					console.log(err);
-					return false;
+                                    this.log(err);
+                                    return false;
 				}
 
 				this.log(yosay(chalk.yellow('Administrator\'s Account Created')));
 
 				var connection = mysql.createConnection({
-					host: this.db_host,
-					user: this.db_user,
-					password: this.db_password,
-					database: this.db_database
+                                    host: this.db_host,
+                                    user: this.db_user,
+                                    password: this.db_password,
+                                    database: this.db_database
 				});
 
 				connection.connect();
 
 				var activateUser = function()
 				{
-					connection.query('UPDATE `' + this.db_prefix + 'users` SET block=0,activation="" WHERE id=1', function(err, rows, fields) {
-						if (err)
-						{
-							console.log(err);
-							return false;
-						}
-					});
-
+                                    connection.query('UPDATE `' + this.db_prefix + 'users` SET block=0,activation="" WHERE id=1', function(err, rows, fields) {
+                                        if (err)
+                                        {
+                                            this.log(err);
+                                            return false;
+                                        }
+                                    });
 				}.bind(this);
 
 				var updateUserGroup = function ()
 				{
-					connection.query('UPDATE `' + this.db_prefix + 'user_usergroup_map` SET group_id=8 WHERE user_id=1', function(err, rows, fields) {
-						if (err)
-						{
-							console.log(err);
-							return false;
-						}
-					});
+                                    connection.query('UPDATE `' + this.db_prefix + 'user_usergroup_map` SET group_id=8 WHERE user_id=1', function(err, rows, fields) {
+                                        if (err)
+                                        {
+                                            consthisole.log(err);
+                                            return false;
+                                        }
+                                    });
 
 				}.bind(this);
 
 				var processTemplate = function(err, rows, fields) {
 
-					if (err)
-					{
-						console.log(err);
-						return false;
-					}
+                                    if (err)
+                                    {
+                                        this.log(err);
+					return false;
+                                    }
 
-					var values = {
-						prefix: this.db_prefix,
-						fields: rows[0]
-					};
+                                    var values = {
+                                        prefix: this.db_prefix,
+                                        fields: rows[0]
+                                    };
 
-					console.log('Path: ', this.path);
-					console.log('Template Path: ', this.templatePath());
-					console.log('Destination Path: ', this.destinationPath());
-					console.log('Values: ', values);
+                                    this.log('Path: ', this.path);
+                                    this.log('Template Path: ', this.templatePath());
+                                    this.log('Destination Path: ', this.destinationPath());
+                                    this.log('Values: ', values);
 
-					this.fs.copyTpl(
-						this.templatePath('_superuser.sql'),
-						this.destinationPath('database/superuser.sql'),
-						values
-					);
+                                    this.fs.copyTpl(
+                                        this.templatePath('_superuser.sql'),
+                                        this.destinationPath('database/superuser.sql'),
+                                        values
+                                    );
 
 				}.bind(this);
 
 				var generateSuperUserScript = function()
 				{
-					connection.query('SELECT * FROM `' + this.db_prefix + 'users`', processTemplate);
-
+                                    var query_string = 'SELECT * FROM `' + this.db_prefix + 'users`';
+                                    connection.query(query_string, processTemplate);
 				}.bind(this);
 
 				async.series(
-					[
-						activateUser(),
-						updateUserGroup(),
-						generateSuperUserScript()
-					]
+                                    [
+                                        activateUser(),
+                                        updateUserGroup(),
+                                        generateSuperUserScript(),
+                                        connection.end()
+                                    ]
 				);
-
-				connection.end();
-
+                        
 				this.finished();
 
 			}.bind(this);
@@ -478,59 +479,59 @@ module.exports = yeoman.generators.Base.extend({
 
 			this.deleteInstallationDirectoryCallBack = function(err) {
 
-				if (err)
-				{
-					console.log(err);
-					return false;
-				}
+                            if (err)
+                            {
+                                this.log(err);
+                                return false;
+                            }
 
-				this.log(yosay(chalk.yellow('Installation Folder Removed')));
+                            this.log(yosay(chalk.yellow('Installation Folder Removed')));
 
-				var connection = mysql.createConnection({
-					host: this.db_host,
-					user: this.db_user,
-					password: this.db_password,
-					database: this.db_database
-				});
+                            var connection = mysql.createConnection({
+                                host: this.db_host,
+                                user: this.db_user,
+                                password: this.db_password,
+                                database: this.db_database
+                            });
 
-				connection.connect();
+                            connection.connect();
 
-				connection.query('SELECT extension_id, params FROM `' + this.db_prefix + 'extensions` WHERE name="com_users"', function(err, rows, fields) {
-					if (err)
-					{
-						console.log(err);
-						return false;
-					}
+                            connection.query('SELECT extension_id, params FROM `' + this.db_prefix + 'extensions` WHERE name="com_users"', function(err, rows, fields) {
+                                if (err)
+                                {
+                                    this.log(err);
+                                    return false;
+                                }
 
-					var userParams = JSON.parse(rows[0].params);
-					userParams.allowUserRegistration = '1';
-					userParams = JSON.stringify(userParams);
-					var extension_id = rows[0].extension_id;
+                                var userParams = JSON.parse(rows[0].params);
+                                userParams.allowUserRegistration = '1';
+                                userParams = JSON.stringify(userParams);
+                                var extension_id = rows[0].extension_id;
 
-					connection.query("UPDATE `" + this.db_prefix + "extensions` SET params='" + userParams + "' WHERE extension_id=" + extension_id, function(err, rows, fields) {
+                                connection.query("UPDATE `" + this.db_prefix + "extensions` SET params='" + userParams + "' WHERE extension_id=" + extension_id, function(err, rows, fields) {
 
-						if (err)
-						{
-							console.log(err);
-							return false;
-						}
+                                    if (err)
+                                    {
+                                        this.log(err);
+                                        return false;
+                                    }
 
-						connection.end();
+                                    connection.end();
 
-						this.updateUserRegistrationSettingCallback();
+                                    this.updateUserRegistrationSettingCallback();
 
-					}.bind(this));
+                                }.bind(this));
 
-				}.bind(this));
-
+                            }.bind(this));
+                                
 			}.bind(this);
 
 			this.importCallBack = function(err) {
 
 				if (err)
 				{
-					console.log(err);
-					return false;
+                                    this.log(err);
+                                    return false;
 				}
 
 				this.log(yosay(chalk.yellow('Database import complete')));
@@ -543,30 +544,28 @@ module.exports = yeoman.generators.Base.extend({
 
 				if (err)
 				{
-					console.log(err);
-					return false;
-					//done(err);
+                                    this.log(err);
+                                    return false;
 				}
 
 				this.log(yosay(chalk.yellow('Running database script...')));
 
-				cp.exec('mysql --user=' + this.db_user + ' --password=' + this.db_password + ' ' + this.db_database + ' < ' + 'joomla.sql',  { cwd: this.destinationPath + "/database" }, this.importCallBack);
+				cp.exec('mysql --user=' + params.db_user + ' --password=' + params.db_password + ' ' + params.db_database + ' < ' + params.path + '/database/joomla.sql', this.importCallBack);
 
 			}.bind(this);
 
 			this.replaceCallBack = function(err, data) {
-				this.log(yosay(chalk.yellow('Replacing sql file prefixes with ' + this.db_prefix + '...')));
+                            this.log(yosay(chalk.yellow('Replacing sql file prefixes...')));
 
-				if (err)
-				{
-					console.log(err);
-					return false;
-					//done(err);
-				}
+                            if (err)
+                            {
+                                this.log(err);
+                                return false;
+                            }
 
-				data = data.replace(/#__/g, this.db_prefix);
+                            data = data.replace(/#__/g, this.db_prefix);
 
-				fs.writeFile('./database/joomla.sql', data, 'utf-8', this.writeCallBack);
+                            fs.writeFile('./database/joomla.sql', data, 'utf-8', this.writeCallBack);
 
 			}.bind(this);
 
@@ -574,9 +573,8 @@ module.exports = yeoman.generators.Base.extend({
 
 				if (err)
 				{
-					console.log(err);
+					this.log(err);
 					return false;
-					//done(err);
 				}
 
 				this.log(yosay(chalk.yellow('Joomla CMS files acquired...')));
