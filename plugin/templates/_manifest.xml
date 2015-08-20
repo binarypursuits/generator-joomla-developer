@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" version="3.3" method="upgrade" group="<%= type %>">
-	<name>plg_<%= type %>_<%= plugin %></name>
+	<name>PLG_<%= uppercaseType %>_<%= camelcase.toUpperCase() %></name>
 	<author><%= author %></author>
 	<creationDate><%= created %></creationDate>
 	<copyright><%= copyright %></copyright>
@@ -8,7 +8,7 @@
 	<authorEmail><%= email %></authorEmail>
 	<authorUrl><%= website %></authorUrl>
 	<version><%= version %></version>
-	<description>MOD_<%= uppercase %>_XML_DESCRIPTION</description>
+	<description>PLG_<%= uppercaseType %>_XML_DESCRIPTION</description>
 
 	<files>
 		<filename plugin="<%= plugin %>"><%= plugin %>.php</filename>
