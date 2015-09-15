@@ -16,10 +16,17 @@ function errorEvent(e) {
 	this.exit();
 }
 
-casper.start(url + '/index.php?option=com_users&view=registration');
+var link = 'http://' + url + '/index.php?option=com_users&view=registration';
+
+casper.start(link);
 
 casper.then(function() {
+	this.capture('landing-page.png');
+        this.echo('Captured landing page screen.');
+});
 
+casper.then(function() {
+    
 	this.fill('form#member-registration', {
 		'jform[name]': 'Website Administrator',
 		'jform[username]': 'webmaster',
@@ -28,11 +35,13 @@ casper.then(function() {
 		'jform[email1]': email,
 		'jform[email2]': email
 	}, true);
-
+       this.capture('registration.png');
+       this.echo('Capture registration form.')
 });
 
 casper.then(function() {
-	this.capture('registration.png');
+       this.echo('Capture form submit response');
+	this.capture('submit.png');
 });
 
 casper.run(function() {
