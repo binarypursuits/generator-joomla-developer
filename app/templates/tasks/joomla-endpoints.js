@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 			var tests = [];
 			var length = rows.length;
 
-			grunt.log.writeln('Found a total of ' + length + ' enpoints to parse...')
+			grunt.log.writeln('Found a total of ' + length + ' enpoints to parse...');
 
 			for (var i = 0; i < length; i ++)
 			{

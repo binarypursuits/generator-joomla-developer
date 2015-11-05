@@ -1,4 +1,4 @@
-'use-strict'
+'use-strict';
 
 var exec = require('child_process').exec;
 var base = require('js-base64').Base64;
@@ -7,6 +7,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('grunt-scrape', 'Scrape endpints to retrieve website assets', function() {
 		var endpoints = grunt.config.get('endpoints');
+
 		var length = endpoints.length;
 
 		grunt.log.writeln('Grunt scrape has ' + length + ' endpoints to parse...');
@@ -21,7 +22,7 @@ module.exports = function(grunt) {
 			{
 				grunt.log.writeln('Skipping endpoint due to invalid URL [' + endpoints[i] + ']');
 			}
-		}
+		}       
 
 	});
 
