@@ -22,7 +22,7 @@ class JConfig {
 	public $offline_message = 'This site is down for maintenance.<br /> Please check back again soon.';
 	public $display_offline_message = '1';
 	public $offline_image = '';
-	public $sitename = '<%= name %>';            // Name of Joomla site
+	public $sitename = '<%= joomla.name %>';            // Name of Joomla site
 	public $editor = 'tinymce';
 	public $captcha = '0';
 	public $list_limit = '20';
@@ -30,11 +30,11 @@ class JConfig {
 
 	/* Database Settings */
 	public $dbtype = 'mysqli';               // Normally mysqli
-	public $host = '<%= db_host %>';              // This is normally set to localhost
-	public $user = '<%= db_user %>';                       // DB username
-	public $password = '<%= db_password %>';                   // DB password
-	public $db = '<%= db_database %>';                         // DB database name
-	public $dbprefix = '<%= db_prefix %>';               // Do not change unless you need to!
+	public $host = '<%= database.host %>';              // This is normally set to localhost
+	public $user = '<%= database.user %>';                       // DB username
+	public $password = '<%= database.password %>';                   // DB password
+	public $db = '<%= database.database %>';                         // DB database name
+	public $dbprefix = '<%= database.prefix %>';               // Do not change unless you need to!
 
 	/* Server Settings */
 	public $secret = '<%= secret %>';     // Change this to something more secure
@@ -47,8 +47,8 @@ class JConfig {
 	public $ftp_pass = '';
 	public $ftp_root = '';
 	public $ftp_enable = '';
-	public $tmp_path = '<%= path %>\\<%= joomlaFolder %>/tmp';                // Please check with your host that this is the correct path to the temp directory. This path needs to be writable by Joomla!
-	public $log_path = '<%= path %>\\<%= joomlaFolder %>/logs';           // Please check with your host that this is the correct path to the logs directory. This path needs to be writable by Joomla!
+	public $tmp_path = '/tmp';                // Please check with your host that this is the correct path to the temp directory. This path needs to be writable by Joomla!
+	public $log_path = '/logs';           // Please check with your host that this is the correct path to the logs directory. This path needs to be writable by Joomla!
 	public $live_site = '';                   // Optional, full url to Joomla install.
 	public $force_ssl = 0;                    // Force areas of the site to be SSL ONLY.  0 = None, 1 = Administrator, 2 = Both Site and Administrator
 
