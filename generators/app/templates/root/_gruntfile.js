@@ -9,25 +9,21 @@ module.exports = function(grunt) {
 
 		endpoints: [],
 
-		name: '<%= name %>',
-
-		url: '<%= url %>',
-
-		repository: {
-			path: '<%= path %>',
-			name: '<%= repositoryName %>',
-			joomla: '<%= joomlaFolder %>',
-			url: '<%= repositoryUrl %>'
+		instance: {
+			path: __dirname,
+			name:  '<%= joomla.name %>',
+			webroot: '<%= joomla.root %>',
+			url: '<%= joomla.url %>'
 		},
 
 		database: {
 			options: {
-				host: '<%= db_host %>',
-				user: '<%= db_user %>',
-				password: '<%= db_password %>',
-				database: '<%= db_database %>'
+				host: '<%= database.host %>',
+				user: '<%= database.username %>',
+				password: '<%= database.password %>',
+				database: '<%= database.database %>'
 			},
-			prefix: '<%= db_prefix %>'
+			prefix: '<%= database.prefix %>'
 		},
 
 		jshint: {
@@ -100,202 +96,17 @@ module.exports = function(grunt) {
 		clean: [
 			'!build/index.html',
 			'build/*js*',
-			'build/*css*',
-			grunt.config.get('repository.path') + grunt.config.get('repository.name') + '/media/plg_system_jopt/css/*css*',
-			'!' + grunt.config.get('repository.path') + grunt.config.get('repository.name') + '/media/plg_system_jopt/css/index.html',
-			grunt.config.get('repository.path') + grunt.config.get('repository.name') + '/media/plg_system_jopt/js/*js*',
-			'!' + grunt.config.get('repository.path') + grunt.config.get('repository.name') + '/media/plg_system_jopt/js/index.html'
+			'build/*css*'
 		],
 
 		copy: {
 			main: {
-				files: [
-					{
-						expand: true,
-						src: ['build/*.css'],
-						dest: grunt.config.get('repository.path') + grunt.config.get('repository.name') + '/media/plg_system_jopt/css/'
-					},
-					{
-						expand: true,
-						src: ['build/*.css.gz'],
-						dest: grunt.config.get('repository.path') + grunt.config.get('repository.name') + '/media/plg_system_jopt/css/'
-					},
-					{
-						expand: true,
-						src: ['build/*.js'],
-						dest: grunt.config.get('repository.path') + grunt.config.get('repository.name') + '/media/plg_system_jopt/js/'
-					},
-					{
-						expand: true,
-						src: ['build/*.js.gz'],
-						dest: grunt.config.get('repository.path') + grunt.config.get('repository.name') + '/media/plg_system_jopt/js/'
-					}
-				]
-			}
-		},
-
-		s3: {
-			options: {
-				key: 'AKIAICEQIBR7TLOUM6ZQ',
-				secret: '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',
-				bucket: 'bp-cdn-media',
-				access: 'public-read',
-				headers: {
-					// Two Year cache policy (1000 * 60 * 60 * 24 * 730)
-					"Content-Encoding": "gzip",
-					"Cache-Control": "max-age=630720000, public",
-					"Expires": new Date(Date.now() + 63072000000).toUTCString()
-				}
-			},
-			js: {
-				options: {
-					headers: {
-						"Content-Type": "text/javascript"
-					}
-				},
-				upload:
-				[
-					{
-						cwd: './build/',
-						src: '*.min.js.gz',
-						dest: 'js/'
-					}
-				]
-			},
-			css: {
-				options: {
-					headers: {
-						"Content-Type": "text/css"
-					}
-				},
-				upload:
-				[
-					{
-						cwd: './build/',
-						src: '*.min.css.gz',
-						dest: 'css/'
-					}
-				]
-
-			}
-		},
-
-		'azure-blob-upload': {
-			js: {
-				options: {
-					serviceOptions: 'DefaultEndpointsProtocol=https;AccountName=arcblobdev;AccountKey=SzIUOsMlepkOpLhPyvHi+xyeHbGE/pcRzL+uokXW5/S6c/4BTX2Waa84qhbW4RY2KeGN+VyM3dvgyPcLxM1R7g==',
-					container: 'cdn',
-					containerOptions: {
-						publicAccessLevel: "blob"
-					},
-					blobProperties: {
-						cacheControl: "public, max-age=31556926",
-						contentEncoding: "gzip",
-						contentType: "text/javascript"
-					}
-
-				},
-				files:
-				[
-					{
-						expand: true,
-						cwd: './build/',
-						src: '*.min.js.gz',
-						dest: ''
-					}
-				]
-			},
-			css: {
-				options: {
-					serviceOptions: 'DefaultEndpointsProtocol=https;AccountName=arcblobdev;AccountKey=SzIUOsMlepkOpLhPyvHi+xyeHbGE/pcRzL+uokXW5/S6c/4BTX2Waa84qhbW4RY2KeGN+VyM3dvgyPcLxM1R7g==',
-					container: 'cdn',
-					containerOptions: {
-						publicAccessLevel: "blob"
-					},
-					blobProperties: {
-						cacheControl: "public, max-age=31556926",
-						contentEncoding: "gzip",
-						contentType: "text/css"
-					}
-
-				},
-				files:
-				[
-					{
-						expand: true,
-						cwd: './build/',
-						src: '*.min.css.gz',
-						dest: ''
-					}
-				]
-			}
-		},
-
-		sync: {
-			main: {
-				files: [{
-					cwd: '<%= joomlaFolder %>',
-					src: ["<%= joomlaFolder %>/**/*"],
-					dest: "/srv/development/www/<%= repositoryName %>.arctg-build.cloudapp.net/public"
-				}],
-				verbose: true,
-				pretend: false,
-				updateAndDelete: true
-			}
-		},
-
-		responsive_images: {
-			build: {
-				options: {
-					sizes: [
-					{
-						width: 320,
-					},
-					{
-						width: 640,
-					},
-					{
-						width: 1024,
-					}
-					]
-				},
-				files: [{
-					expand: true,
-					src: ['**.{jpg,gif,png}'],
-					cwd: 'test/assets/custom_dest/',
-					custom_dest: 'tmp/custom_dest/{%= width %}/'
-				}]
-			}
-		},
-
-		"ftp-deploy": {
-			build: {
-				auth: {
-					host: '<%= ftp_url %>',
-					port: 21,
-					authKey: 'key1'
-				},
-				src: './<%= joomlaFolder %>',
-				dest: '/site/wwwroot',
-				exclusions: [
-				'/webroot/**/.DS_Store',
-				'/webroot/**/Thumbs.db',
-				'/webroot/.*',
-				'/webroot/configuration.php',
-				'/webroot/*.xml',
-				'/webroot/*.md',
-				'/webroot/*.json',
-				'/webroot/*.lock',
-				'/webroot/*.dist',
-				],
-				serverSep: '/',
-				concurrency: 4,
-				progress: true
+				files: []
 			}
 		}
-
-	});
-
+            });
+        
+        
 	grunt.registerTask('dump', 'Utility to dump variables for troubleshooting purposes.', function() {
 		grunt.log.writeln('project root');
 		var endpoints = grunt.config.get('endpoints');

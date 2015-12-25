@@ -18,7 +18,7 @@ var open = require('open');
 var rimraf = require('rimraf');
 var Download = require('download');
 var progress = require('download-status');
-
+var glob = require('glob');
 var binPath = phantomjs.path;
 
 module.exports = generators.Base.extend({
@@ -43,6 +43,7 @@ module.exports = generators.Base.extend({
                     type: 'input',
                     name: 'name',
                     message: 'Enter name for this Joomla instance:',
+                    "default": "Joomla",
                     store: true
                 },
                 {
@@ -61,6 +62,7 @@ module.exports = generators.Base.extend({
                     type: 'input',
                     name: 'url',
                     message: 'Enter local domain name for development off this Joomla instance (no http or https):',
+                    "default": "joomla",
                     store: true
                 }];
 
@@ -155,30 +157,35 @@ module.exports = generators.Base.extend({
                 type: 'input',
                 name: 'host',
                 message: 'Enter database hose for this Joomla instance:',
+                "default": "localhost",
                 store: true
             },
             {
                 type: 'input',
                 name: 'username',
                 message: 'Enter database username for this Joomla instance:',
+                "default": "joomla",
                 store: true
             },
             {
                 type: 'input',
                 name: 'password',
                 message: 'Enter database user\'s password for this Joomla instance:',
+                "default": "joomla",
                 store: false
             },
             {
                 type: 'input',
                 name: 'database',
                 message: 'Enter database name for this Joomla instance:',
+                "default": "joomla",
                 store: false
             },
             {
                 type: 'input',
                 name: 'prefix',
                 message: 'Enter database prefix for this Joomla instance:',
+                "default": "jdev_",
                 store: false
             }];
 
@@ -314,35 +321,17 @@ module.exports = generators.Base.extend({
             }];
 
             this.prompt(prompt, function (responses) {
-              this.options.bower = responses.bower;
+              this.options.bower = (responses.bower) ? responses.bower : [];
               done();
             }.bind(this));
         }
     },
     writing: {
-        templates: function () {
-            
-            this.fs.copy(this.templateRoot('/custom/index.html'), this.destinationPath('database/index.html'));
-            this.fs.copy(this.templateRoot('/custom/index.html'), this.destinationPath('build/index.html'));
-            
-            glob.sync('**', { cwd: this.templateRoot('/scripts') }).map(function (file) {
-                this.fs.copyTpl(file, this.destinationPath('/scripts'));
-            }, this);
-            
-            glob.sync('**', { cwd: this.templateRoot('/tasks') }).map(function (file) {
-                this.fs.copyTpl(file, this.destinationPath('/tasks'));
-            }, this);
-            
-            glob.sync('**', { cwd: this.templatePath('/root') }).map(function (file) {
-                this.fs.copyTpl(file, this.destinationPath(file.replace(/^_/, '')), this.options);
-            }, this);
-            
-        },
         repository: function() {              
             var done = this.async();
-            
+            this.log(yosay(chalk.yellow('Writing -> Repository')));
             // clone repository or get joomla master
-            if (this.options.repository)
+            if (this.options.repository === 'existing')
             {
                 Git.clone({
                     repo: this.options.repository,
@@ -360,53 +349,91 @@ module.exports = generators.Base.extend({
                 download.run(done);
             }
         },
+        templates: function () {
+          
+            this.fs.copy(this.templatePath('custom/index.html'), this.destinationPath('database/index.html'));
+            this.fs.copy(this.templatePath('custom/index.html'), this.destinationPath('build/index.html'));
+            
+            glob.sync('**', { cwd: this.templatePath('scripts') }).map(function (file) {
+                this.fs.copyTpl(this.templatePath('scripts/' + file), this.destinationPath('scripts/' + file.replace(/^_/, '')), this.options);
+            }, this);
+            
+            glob.sync('**', { cwd: this.templatePath('tasks') }).map(function (file) {
+                this.fs.copyTpl(this.templatePath('tasks/' + file), this.destinationPath('tasks/' + file.replace(/^_/, '')), this.options);
+            }, this);
+            
+            glob.sync('**', { cwd: this.templatePath('root') }).map(function (file) {
+                this.fs.copyTpl(this.templatePath('root/' + file), this.destinationPath(file.replace(/^_/, '')), this.options);
+            }, this);
+            
+        },
         webroot: function() {
             var done = this.async();
-            
-            glob.sync('**', { cwd: this.sourceRoot('/templates/webroot') }).map(function (file) {
-                this.fs.copyTpl(file, this.destinationPath('/' + this.options.joomla.root + '/' + file.replace(/^_/, '')), this.options);
+            this.log(yosay(chalk.yellow('Writing -> Webroot')));
+            glob.sync('**', { cwd: this.templatePath('webroot/') }).map(function (file) {
+                this.fs.copyTpl(this.templatePath('webroot/' + file), this.destinationPath(this.options.joomla.root + '/' + file.replace(/^_/, '')), this.options);
             }, this);
 
             done();
         },
         parse: function() {
             var done = this.async();
-            var destinationPath = this.destinationPath;
-                        
-            // process sql installation script for prefixes
-            this.log(yosay(chalk.yellow('Replacing sql file prefixes...')));
+            var source = this.destinationPath('database/joomla.sql');
+            var prefix = this.options.database.prefix;
             
-            fs.readFile('./' + this.joomlaFolder + '/installation/sql/mysql/joomla.sql', 'utf-8', function(error, data){
+            this.log(yosay(chalk.yellow('Writing -> Parse')));
+          
+            var writeFileCallback = function(error) {
+                
+            }
+          
+            var readDbScriptCallback = function(error, data) {
+                console.log('Writing -> Parse -> readDbScriptCallback');
                 if (error)
                 {
                     done(error);
                 }
                 
-                data = data.replace(/#__/g, this.options.databasePrefix);
-                fs.writeFile(destinationPath('/database/joomla.sql'), data, 'utf-8', done);                
-            });
+                data = data.replace(/#__/g, prefix);
+               
+                fs.writeFile(source, data, 'utf-8', function(error){
+                    console.log('Writing -> Parse -> readDbScriptCallback -> setTimout');
+                    if (error)
+                    {
+                        console.log('error -> ' + error);
+                        done(error);
+                    }
+                    
+                    done();
+                });                  
+            }
+            
+            // process sql installation script for prefixes           
+            fs.readFile(this.destinationPath(this.options.joomla.root + '/installation/sql/mysql/joomla.sql'), 'utf-8', readDbScriptCallback);
         },
         import: function() {
             var done = this.async();
             
             // import joomla database
-            this.log(yosay(chalk.yellow('Running database script...')));
+            this.log(yosay(chalk.yellow('Writing -> Import')));
 
-            cp.exec('mysql --user=' + this.options.database.user + ' --password=' + this.options.database.password + ' ' + this.options.database.database + ' < ' + this.destinationPath('/database/joomla.sql'), done);
+            cp.exec('mysql --user=' + this.options.database.user + ' --password=' + this.options.database.password + ' ' + this.options.database.database + ' < ' + this.destinationPath('database/joomla.sql'), done);
         },
         clean: function() {
             var done = this.async();
             
             // clean up installation folder
-            this.log(yosay(chalk.yellow('Database import complete')));
+            this.log(yosay(chalk.yellow('Writing -> Clean')));
 
-            rimraf(this.destinationRoot() + '/' + this.options.joomla.root + '/installation/', done);
+            rimraf(this.destinationPath(this.options.joomla.root + '/installation/'), done);
         },
         administrator: function() {
             var done = this.async();
             
             // enable registration and set up administrators account
-            var db = require('../../modules/database');
+            this.log(yosay(chalk.yellow('Writing -> Administrator')));
+            
+            var db = require('/scripts/database');
             db.create(this.options.database);
             
             var
@@ -415,6 +442,7 @@ module.exports = generators.Base.extend({
                 administrator = this.options.administrator;
             
             var finished = function(error, rows, fields) {
+                this.log(yosay(chalk.yellow('Writing -> Administrator -> Finished')));
                 if (error)
                 {
                     done(error);
@@ -422,18 +450,20 @@ module.exports = generators.Base.extend({
                 
                 db.close();
                 done();
-            }
+            }.bind(this);
             
             var updateUserGroupCallback = function (error, rows, fields) {
+                this.log(yosay(chalk.yellow('Writing -> Administrator -> updateUserGroupCallback')));
                 if (error)
                 {
                     done(error);
                 }
                 
                 db.query('UPDATE `' + databasePrefix + 'user_usergroup_map` SET group_id=8 WHERE user_id=' + id, finished);
-            }
+            }.bind(this);
             
             var grabAdministratorUserIdCallback = function(error, rows, fields) {
+                this.log(yosay(chalk.yellow('Writing -> Administrator -> grabAdministratorUserIdCallback')));
                 if (error)
                 {
                     done(error);
@@ -444,27 +474,30 @@ module.exports = generators.Base.extend({
                 id = rows[0].id;
                 
                 db.query('UPDATE `' + databasePrefix + 'users` SET block=0, activation="" WHERE id=' + id, updateUserGroupCallback);
-            }
+            }.bind(this);
             
             var createUserCallback = function (error, rows, fields) {
+                this.log(yosay(chalk.yellow('Writing -> Administrator -> createUserCallback')));
                 if (error)
                 {
                     done(error);
                 }
                 
                 db.query('SELECT id FROM `' + databasePrefix + '_users` WHERE username="' + administrator.username + '"', grabAdministratorUserIdCallback)
-            }
+            }.bind(this);
             
             var updateUserParamsCallback = function(error, stdout, stderr) {
+                this.log(yosay(chalk.yellow('Writing -> Administrator -> updateUserParamsCallback')));
                 if (error)
                 {
                     done(error);
                 }
                 
                 cp.exec('casperjs installation.js --password=' + base.encode(administrator.password) + ' --email=' + administrator.email + ' --url=' + this.url, { cwd: this.templatePath("/scripts") }, createUserCallback);
-            }
+            }.bind(this);
             
             var retrieveUserParamsCallback = function(error, rows, fields) {
+                this.log(yosay(chalk.yellow('Writing -> Administrator -> retrieveUserParamsCallback')));
                 if (error)
                 {
                     done(error);
@@ -477,7 +510,7 @@ module.exports = generators.Base.extend({
                 var extension_id = rows[0].extension_id;
                 
                 db.query("UPDATE `" + databasePrefix + "extensions` SET params='" + params + "' WHERE extension_id=" + extension_id, updateUserParamsCallback)
-            }
+            }.bind(this);
            
             db.query('SELECT extension_id, params FROM `' + databasePrefix + 'extensions` WHERE name="com_users"', retrieveUserParamsCallback);
         },
@@ -485,6 +518,12 @@ module.exports = generators.Base.extend({
             var done = this.async();
             
             // initial push of code
+            this.log(yosay(chalk.yellow('Writing -> Git')));
+            
+            
+            return true;
+            
+
             var initializeGitRepository = function () {
                 cp.exec('git init', {cwd: this.destinationPath()}, addRemoteOrigin);
             }
