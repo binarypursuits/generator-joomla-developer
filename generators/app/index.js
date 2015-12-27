@@ -13,12 +13,12 @@ var cp = require('child_process');
 var phantomjs = require('phantomjs');
 var base = require('js-base64').Base64;
 var fs = require('fs');
-var async = require('async');
 var open = require('open');
 var rimraf = require('rimraf');
 var Download = require('download');
 var progress = require('download-status');
 var glob = require('glob');
+var db = require('../../scripts/database');
 var binPath = phantomjs.path;
 
 module.exports = generators.Base.extend({
@@ -26,7 +26,7 @@ module.exports = generators.Base.extend({
         generators.Base.apply(this, arguments);
 
         // add option to skip install
-        this.option('skip-install');
+        // this.option('skip-install');
         this.slugify = slugify;
         
     },
@@ -329,7 +329,7 @@ module.exports = generators.Base.extend({
     writing: {
         repository: function() {              
             var done = this.async();
-            this.log(yosay(chalk.yellow('Writing -> Repository')));
+            this.log(yosay(chalk.yellow('End -> Repository')));
             // clone repository or get joomla master
             if (this.options.repository === 'existing')
             {
@@ -349,8 +349,9 @@ module.exports = generators.Base.extend({
                 download.run(done);
             }
         },
-        templates: function () {
-          
+        templates: function () {          
+            this.log(yosay(chalk.yellow('End -> Templates')));
+            
             this.fs.copy(this.templatePath('custom/index.html'), this.destinationPath('database/index.html'));
             this.fs.copy(this.templatePath('custom/index.html'), this.destinationPath('build/index.html'));
             
@@ -366,74 +367,63 @@ module.exports = generators.Base.extend({
                 this.fs.copyTpl(this.templatePath('root/' + file), this.destinationPath(file.replace(/^_/, '')), this.options);
             }, this);
             
-        },
-        webroot: function() {
-            var done = this.async();
-            this.log(yosay(chalk.yellow('Writing -> Webroot')));
             glob.sync('**', { cwd: this.templatePath('webroot/') }).map(function (file) {
                 this.fs.copyTpl(this.templatePath('webroot/' + file), this.destinationPath(this.options.joomla.root + '/' + file.replace(/^_/, '')), this.options);
             }, this);
-
-            done();
-        },
-        parse: function() {
-            var done = this.async();
-            var source = this.destinationPath('database/joomla.sql');
-            var prefix = this.options.database.prefix;
+                        
+            glob.sync('*.sql', { cwd: this.destinationPath(this.options.joomla.root + '/installation/sql/mysql') }).map(function (file) {
+                this.fs.copy(this.destinationPath(this.options.joomla.root + '/installation/sql/mysql/' + file), this.destinationPath('database/' + file));
+            }, this);
             
-            this.log(yosay(chalk.yellow('Writing -> Parse')));
-          
-            var writeFileCallback = function(error) {
-                
-            }
-          
-            var readDbScriptCallback = function(error, data) {
-                console.log('Writing -> Parse -> readDbScriptCallback');
-                if (error)
-                {
-                    done(error);
-                }
-                
-                data = data.replace(/#__/g, prefix);
-               
-                fs.writeFile(source, data, 'utf-8', function(error){
-                    console.log('Writing -> Parse -> readDbScriptCallback -> setTimout');
-                    if (error)
-                    {
-                        console.log('error -> ' + error);
-                        done(error);
-                    }
-                    
-                    done();
-                });                  
-            }
-            
-            // process sql installation script for prefixes           
-            fs.readFile(this.destinationPath(this.options.joomla.root + '/installation/sql/mysql/joomla.sql'), 'utf-8', readDbScriptCallback);
-        },
-        import: function() {
-            var done = this.async();
-            
-            // import joomla database
-            this.log(yosay(chalk.yellow('Writing -> Import')));
-
-            cp.exec('mysql --user=' + this.options.database.user + ' --password=' + this.options.database.password + ' ' + this.options.database.database + ' < ' + this.destinationPath('database/joomla.sql'), done);
+            var data = this.fs.read(this.destinationPath('database/joomla.sql'));
+            this.fs.write(this.destinationPath('database/joomla.sql'), data.replace(/#__/g, this.options.database.prefix));
         },
         clean: function() {
             var done = this.async();
             
             // clean up installation folder
-            this.log(yosay(chalk.yellow('Writing -> Clean')));
+            this.log(yosay(chalk.yellow('End -> Clean')));
 
             rimraf(this.destinationPath(this.options.joomla.root + '/installation/'), done);
+        }
+    },
+    install: {
+ 
+        dependencies: function () {
+            this.installDependencies({
+                skipInstall: this.options['skip-install']
+            });
         },
+        import: function() {
+            var done = this.async();
+            
+            // import joomla database
+            this.log(yosay(chalk.yellow('Install -> Import Database')));
+
+            cp.exec('mysql --user=' + this.options.database.username + ' --password=' + this.options.database.password + ' ' + this.options.database.database + ' < ' + this.destinationPath('database/joomla.sql'), function(error, stdout){
+                
+                if (error)
+                {
+                    console.log('error -> ', error);
+                    done(error);
+                }
+                                
+                console.log(stdout);
+                
+                done();
+                
+            });
+        }
+    },
+    end: {
+        
+
         administrator: function() {
             var done = this.async();
             
             // enable registration and set up administrators account
-            this.log(yosay(chalk.yellow('Writing -> Administrator')));
+            this.log(yosay(chalk.yellow('End -> Create Administrator Account')));
             
-            var db = require('/scripts/database');
             db.create(this.options.database);
             
             var
@@ -442,7 +432,7 @@ module.exports = generators.Base.extend({
                 administrator = this.options.administrator;
             
             var finished = function(error, rows, fields) {
-                this.log(yosay(chalk.yellow('Writing -> Administrator -> Finished')));
+                this.log(yosay(chalk.yellow('End -> Administrator -> Finished')));
                 if (error)
                 {
                     done(error);
@@ -453,7 +443,7 @@ module.exports = generators.Base.extend({
             }.bind(this);
             
             var updateUserGroupCallback = function (error, rows, fields) {
-                this.log(yosay(chalk.yellow('Writing -> Administrator -> updateUserGroupCallback')));
+                this.log(yosay(chalk.yellow('End -> Administrator -> updateUserGroupCallback')));
                 if (error)
                 {
                     done(error);
@@ -463,7 +453,7 @@ module.exports = generators.Base.extend({
             }.bind(this);
             
             var grabAdministratorUserIdCallback = function(error, rows, fields) {
-                this.log(yosay(chalk.yellow('Writing -> Administrator -> grabAdministratorUserIdCallback')));
+                this.log(yosay(chalk.yellow('End -> Administrator -> grabAdministratorUserIdCallback')));
                 if (error)
                 {
                     done(error);
@@ -477,27 +467,35 @@ module.exports = generators.Base.extend({
             }.bind(this);
             
             var createUserCallback = function (error, rows, fields) {
-                this.log(yosay(chalk.yellow('Writing -> Administrator -> createUserCallback')));
+                this.log(yosay(chalk.yellow('End -> Administrator -> createUserCallback')));
                 if (error)
                 {
                     done(error);
                 }
                 
-                db.query('SELECT id FROM `' + databasePrefix + '_users` WHERE username="' + administrator.username + '"', grabAdministratorUserIdCallback)
+                console.log('createUserCallback');
+                console.log('rows -> ', rows);
+                console.log('fields -> ', fields);
+                
+                db.query('SELECT id FROM `' + databasePrefix + 'users` WHERE username="' + administrator.username + '"', grabAdministratorUserIdCallback)
             }.bind(this);
             
-            var updateUserParamsCallback = function(error, stdout, stderr) {
-                this.log(yosay(chalk.yellow('Writing -> Administrator -> updateUserParamsCallback')));
+            var updateUserParamsCallback = function(error, stdout) {
+                this.log(yosay(chalk.yellow('End -> Administrator -> updateUserParamsCallback')));
                 if (error)
                 {
                     done(error);
                 }
                 
-                cp.exec('casperjs installation.js --password=' + base.encode(administrator.password) + ' --email=' + administrator.email + ' --url=' + this.url, { cwd: this.templatePath("/scripts") }, createUserCallback);
+                console.log('updateUserParamsCallback');
+                console.log('stdout -> ', stdout);
+                console.log('stderr -> ', stderr);
+                
+                cp.exec('casperjs ' + this.destinationPath('scripts/installation.js') + ' --password=' + base.encode(administrator.password) + ' --email=' + administrator.email + ' --url=' + this.url, createUserCallback);
             }.bind(this);
             
             var retrieveUserParamsCallback = function(error, rows, fields) {
-                this.log(yosay(chalk.yellow('Writing -> Administrator -> retrieveUserParamsCallback')));
+                this.log(yosay(chalk.yellow('End -> Administrator -> retrieveUserParamsCallback')));
                 if (error)
                 {
                     done(error);
@@ -514,95 +512,11 @@ module.exports = generators.Base.extend({
            
             db.query('SELECT extension_id, params FROM `' + databasePrefix + 'extensions` WHERE name="com_users"', retrieveUserParamsCallback);
         },
-        git: function() {
-            var done = this.async();
-            
-            // initial push of code
-            this.log(yosay(chalk.yellow('Writing -> Git')));
-            
-            
-            return true;
-            
-
-            var initializeGitRepository = function () {
-                cp.exec('git init', {cwd: this.destinationPath()}, addRemoteOrigin);
-            }
-
-            var addRemoteOrigin = function (error, stdout, stderr) {
-                if (error)
-                {
-                    done(error);
-                }
-                
-                cp.exec('git remote add origin ' + this.repositoryUrl, {cwd: this.path}, function (err, stdout, stderr) {
-
-                
-
-                    this.log('Added remote origin...');
-
-                }.bind(this));
-
-            }.bind(this);
-
-            var commitReadMe = function (error, stdout, stderr) {
-                if (error)
-                {
-                    done(error);
-                }
-                
-                cp.exec('git commit -m \'Initial commit with README.md\'', {cwd: this.path}, function (err, stdout, stderr) {
-
-                
-                    this.log('Committed README.md...');
-
-                }.bind(this));
-
-            }.bind(this);
-
-
-            var pushReadMe = function (error, stdout, stderr) {
-                if (error)
-                {
-                    done(error);
-                }
-                cp.exec('git push -u origin master', {cwd: this.path}, function (err, stdout, stderr) {
-
-                   
-                    this.log('Pushed README.md to origin...');
-
-                }.bind(this));
-
-            }.bind(this);
-
-
-            var pushCodeBase = function (error, stdout, stderr) {
-                if (error)
-                {
-                    done(error);
-                }
-                
-                cp.exec('git push --all', {cwd: this.path}, function () {
-
-                 
-                });
-            }
-            
-            
-        },
         finished: function() {
-           this.log(yosay(chalk.yellow('Finished!')));
+            this.log(yosay(chalk.yellow('Finished!')));
 
             open('http://' + this.config.get('url') + '/administrator');
         }
-    },
-    install: {
-        download: function() {
-    
-        },
-        dependencies: function () {
-            this.installDependencies({
-                skipInstall: this.options['skip-install']
-            });
-        }
+        
     }
 });

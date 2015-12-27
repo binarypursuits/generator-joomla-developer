@@ -32,3 +32,5 @@ var database = (function(){
     };
     
 }());
+
+module.exports = database;
