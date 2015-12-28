@@ -1,7 +1,7 @@
 'use strict';
 
 var generators = require('yeoman-generator');
-var slugify = require('underscore.string/slugify');
+var slugify = require('slugify');
 var chalk = require('chalk');
 var yosay = require('yosay');
 var path = require('path');
@@ -489,7 +489,6 @@ module.exports = generators.Base.extend({
                 
                 console.log('updateUserParamsCallback');
                 console.log('stdout -> ', stdout);
-                console.log('stderr -> ', stderr);
                 
                 cp.exec('casperjs ' + this.destinationPath('scripts/installation.js') + ' --password=' + base.encode(administrator.password) + ' --email=' + administrator.email + ' --url=' + this.url, createUserCallback);
             }.bind(this);

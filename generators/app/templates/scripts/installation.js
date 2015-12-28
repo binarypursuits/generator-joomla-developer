@@ -19,15 +19,15 @@ function errorEvent(e) {
 casper.start(url + '/index.php?option=com_users&view=registration');
 
 casper.then(function() {
-
-	this.fill('form#member-registration', {
+    this.capture('form.png');
+	this.fill('#member-registration', {
 		'jform[name]': 'Website Administrator',
 		'jform[username]': 'webmaster',
 		'jform[password1]': password,
 		'jform[password2]': password,
 		'jform[email1]': email,
 		'jform[email2]': email
-	}, true);
+	}, false);
 
 });
 
