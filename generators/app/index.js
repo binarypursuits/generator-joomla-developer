@@ -7,7 +7,6 @@ var yosay = require('yosay');
 var path = require('path');
 var Git = require('git-tools');
 var md5 = require('MD5');
-var hash = require('../../scripts/hash');
 var path = require('path');
 var random = require('random-ext');
 var cp = require('child_process');
@@ -131,8 +130,7 @@ module.exports = generators.Base.extend({
                     name: response.name,
                     username: response.username,
                     email: response.email,
-                    //password: response.password
-                    password: hash.create(response.password)
+                    password: response.password
                 };
                                
                 done();
@@ -402,70 +400,28 @@ module.exports = generators.Base.extend({
             var done = this.async();
             
             // import joomla database
-            this.log(yosay(chalk.yellow('Install -> Import Database')));
+            this.log(yosay(chalk.yellow('Install -> Import -> Database')));
 
             cp.exec('mysql --user=' + this.options.database.username + ' --password=' + this.options.database.password + ' ' + this.options.database.database + ' < ' + this.destinationPath('database/joomla.sql'), function(error, stdout){
                 
                 if (error)
                 {
-                    console.log('error -> ', error);
                     done(error);
                 }
-                                
-                console.log(stdout);
                 
                 done();
                 
             });
         },
-        administrator: function() {
-            var done = this.async();
-            
-            // import joomla database
-            this.log(yosay(chalk.yellow('Install -> Import Database')));
-
-            cp.exec('mysql --user=' + this.options.database.username + ' --password=' + this.options.database.password + ' ' + this.options.database.database + ' < ' + this.destinationPath('database/user.sql'), function(error, stdout){
-                
-                if (error)
-                {
-                    console.log('error -> ', error);
-                    done(error);
-                }
-                                
-                console.log(stdout);
-                
-                done();
-                
-            });
-        }
-    },
-    end: {
         params: function() {
             var done = this.async();
             
-            // enable registration and set up administrators account
-            this.log(yosay(chalk.yellow('End -> Create Administrator Account')));
-            
+            this.log(yosay(chalk.yellow('Install -> Params -> Set Global Registration Params')));
+
             db.create(this.options.database);
             
-            var
-                id, 
-                databasePrefix = this.options.database.prefix,
-                administrator = this.options.administrator;
-            
-            var finished = function(error, rows, fields) {
-                this.log(yosay(chalk.yellow('End -> Administrator -> Finished')));
-                if (error)
-                {
-                    done(error);
-                }
-                
-                db.close();
-                done();
-            }.bind(this);
-            
             var retrieveUserParamsCallback = function(error, rows, fields) {
-                this.log(yosay(chalk.yellow('End -> Administrator -> retrieveUserParamsCallback')));
+                
                 if (error)
                 {
                     done(error);
@@ -477,10 +433,70 @@ module.exports = generators.Base.extend({
                 
                 var extension_id = rows[0].extension_id;
                 
-                db.query("UPDATE `" + databasePrefix + "extensions` SET params='" + params + "' WHERE extension_id=" + extension_id, finished);
+                db.query("UPDATE `" + this.options.database.prefix + "extensions` SET params='" + params + "' WHERE extension_id=" + extension_id, done);
+                
             }.bind(this);
            
-            db.query('SELECT extension_id, params FROM `' + databasePrefix + 'extensions` WHERE name="com_users"', retrieveUserParamsCallback);
+            db.query('SELECT extension_id, params FROM `' + this.options.database.prefix + 'extensions` WHERE name="com_users"', retrieveUserParamsCallback);
+        },
+        administrator: function() {
+            var done = this.async();
+            
+            this.log(yosay(chalk.yellow('Install -> Administra')));
+            
+            cp.exec('casperjs installation.js --password=' + base.encode(this.options.administrator.password) + ' --username=' + this.options.administrator.username + ' --email=' + this.options.administrator.email + ' --url=' + this.options.joomla.url, { cwd: this.destinationPath("scripts") }, done);
+        }
+    },
+    end: {
+        cleanup: function() {
+            var done = this.async();
+            
+            // enable registration and set up administrators account
+            this.log(yosay(chalk.yellow('End -> Cleanup')));
+            
+            var
+                id, 
+                databasePrefix = this.options.database.prefix,
+                administrator = this.options.administrator;
+            
+            var finished = function(error, rows, fields) {
+                this.log(yosay(chalk.yellow('End -> Cleanup -> Finished')));
+                if (error)
+                {
+                    done(error);
+                }
+                
+                db.close();
+                done();
+            }.bind(this);
+            
+            var updateAdministratorGroupCallback = function(error, rows, fields) {
+                
+                this.log(yosay(chalk.yellow('End -> Cleanup -> updateAdministratorGroupCallback')));
+                
+                // Get User ID for newly created administrator
+                db.query("UPDATE `" + databasePrefix + "users` SET block=0,activation='' WHERE id=" + id, finished);
+                
+            }.bind(this);
+            
+            var captureAdministratorPrimaryKeyCallback = function(error, rows, fields) {
+                
+                this.log(yosay(chalk.yellow('End -> Cleanup -> captureAdministratorPrimaryKeyCallback')));
+                
+                console.log('rows -> ', rows);
+                
+                id = rows[0].id;
+                
+                // Get User ID for newly created administrator
+                db.query("UPDATE `" + databasePrefix + "user_usergroup_map` SET group_id=8 WHERE user_id=" + id, updateAdministratorGroupCallback);
+                
+            }.bind(this);
+                
+            this.log(yosay(chalk.yellow('End -> Cleanup -> createUserCallBack')));
+                
+            // Get User ID for newly created administrator
+            db.query("SELECT id FROM `" + databasePrefix + "users` WHERE username='" + administrator.username + "'", captureAdministratorPrimaryKeyCallback);
+            
         },
         finished: function() {
             this.log(yosay(chalk.yellow('Finished!')));
