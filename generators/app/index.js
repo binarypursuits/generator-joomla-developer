@@ -68,9 +68,6 @@ module.exports = generators.Base.extend({
 
             this.prompt(prompt, function (response) {
                 var str = random.string(20);
-                        
-                this.options.secret = md5(str);
-                this.options.package = response.name.replace(/\s+/g, '-').toLowerCase();
                 
                 this.options.extensions = {
                     components: [],
@@ -85,8 +82,13 @@ module.exports = generators.Base.extend({
                     name: response.name,
                     version: response.version,
                     root: response.root,
-                    url: response.url
+                    url: response.url,
+                    secret: md5(str),
+                    package: response.name.replace(/\s+/g, '_').toLowerCase()
                 };
+                
+                this.config.set('joomla', this.options.joomla);  
+                this.config.set('extensions', this.options.extensions);  
                 
                 done();
             }.bind(this));
@@ -132,7 +134,7 @@ module.exports = generators.Base.extend({
                     email: response.email,
                     password: response.password
                 };
-                               
+                this.config.set('administrator', this.options.administrator);   
                 done();
             }.bind(this));
         },
@@ -199,6 +201,7 @@ module.exports = generators.Base.extend({
                     password: response.password,
                     prefix: response.prefix
                 };
+                this.config.set('database', this.options.database);   
                 done();
             }.bind(this));
         },
@@ -240,6 +243,7 @@ module.exports = generators.Base.extend({
 
             this.prompt(prompt, function (responses) {
                 this.options.repository = responses.url;
+                this.config.set('repository', this.options.repository);   
                 done();
             }.bind(this));
 
@@ -294,7 +298,9 @@ module.exports = generators.Base.extend({
                     website: responses.website,
                     languagecode: responses.languagecode
                 };
-                        
+                
+                this.config.set('development', this.options.development);   
+                
                 done();
             }.bind(this));
         },
