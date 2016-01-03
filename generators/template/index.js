@@ -1,131 +1,98 @@
 'use strict';
-var yeoman = require('yeoman-generator');
+
+var generators = require('yeoman-generator');
+var slugify = require('slugify');
 var chalk = require('chalk');
 var yosay = require('yosay');
 var path = require('path');
+var glob = require('glob');
+var date = require('../../scripts/date');
 
-module.exports = yeoman.generators.Base.extend({
+module.exports = generators.Base.extend({
+    constructor: function () {
+        generators.Base.apply(this, arguments);
 
-	initializing: function () {
-		this.pkg = require('../package.json');
-	},
+        // add option to skip install
+        this.option('skip-install');
+        this.slugify = slugify;
 
-	prompting: function () {
-		var done = this.async();
-		// Have Yeoman greet the user.
-		this.log(yosay(
-			'Welcome to the ' + chalk.red('JoomlaDeveloper') + ' component generator!'
-		));
+    },
+    prompting: {
+        preprocessor: function () {
+            var done = this.async();
+            // Have Yeoman greet the user.
+            this.log(yosay(
+                    'Welcome to the ' + chalk.red('JoomlaDeveloper') + ' component generator!'
+                    ));
 
-		var prompts =
-		[
-			{
-				type : 'input',
-				name : 'camelcase',
-				message : 'What is name of the new template using CamelCase formatting?',
-				store : true
-			}
-		];
+            var prompts =
+                    [
+                        {
+                            type: 'input',
+                            name: 'formal',
+                            message: 'What is formal name of the new template using readable formatting?',
+                            store: true
+                        },
+                        {
+                            type: 'input',
+                            name: 'version',
+                            message: 'What is name of the new template using CamelCase formatting?',
+                            "default": "0.1.0"
+                        },
+                        {
+                            type: 'input',
+                            name: 'description',
+                            message: 'Enter description of the new template?',
+                            "default": 'Custom template'
+                        }
+                    ];
 
-		this.prompt(prompts, function (props) {
-			this.camelcase = props.camelcase;
-			done();
-		}.bind(this));
-	},
+            this.prompt(prompts, function (response) {
+                this.options.template = {
+                    formal: response.formal,
+                    name: response.formal.replace(/\s+/g, '').toLowerCase(),
+                    template: response.formal.replace(/\s+/g, '_').toLowerCase(),
+                    language: response.formal.replace(/\s+/g, '_').toUpperCase(),
+                    version: response.version,
+                    description: response.description,
+                    created: date.created()
+                };
 
-	writing: {
-		component: function () {
+                this.options.joomla = this.config.get('joomla');
+                this.options.development = this.config.get('development');
 
-			var months = ['January', 'February', 'March', 'April','May','June','July','August','September','October','November','December'];
-			var date = new Date();
+                done();
+            }.bind(this));
+        }
+    },
+    writing: {
+        template: function () {
 
-			var params = {
-					template: this.camelcase.toLowerCase(),
-					author: this.author || this.config.get('author'),
-					created: months[date.getMonth()] + ' ' + date.getFullYear(),
-					copyright: this.copyright || this.config.get('copyright'),
-					license: this.license || this.config.get('license'),
-					email: this.email || this.config.get('email'),
-					website: this.website || this.config.get('website'),
-					version: '0.0.0',
-					description: this.description,
-					uppercase: this.camelcase.toUpperCase(),
-					camelcase: this.camelcase,
-					languagefile: true,
-					languagecode: this.languagecode || this.config.get('languagecode'),
-					folders: {
-						js: true,
-						css: true,
-						html: true,
-						fonts: true,
-						images: true
-					}
-				};
+            var extensions = this.config.get('extensions');
+            extensions.templates.push(this.options.template);
+            this.config.set('extensions', extensions);
 
+            var mediaPath = this.options.joomla.root + '/media/tpl_' + this.options.template.name + '/';
+            var templatePath = this.options.joomla.root + '/templates/' + this.options.template.name + '/';
 
-			var templates = this.config.get('templates');
-			templates.push(params);
-			this.config.set('templates', templates);
+            this.fs.copy(this.templatePath('index.html'), this.destinationPath(mediaPath + 'js/index.html'));
+            this.fs.copy(this.templatePath('index.html'), this.destinationPath(mediaPath + 'css/index.html'));
+            this.fs.copy(this.templatePath('index.html'), this.destinationPath(mediaPath + 'less/index.html'));
+            this.fs.copy(this.templatePath('index.html'), this.destinationPath(mediaPath + 'sass/index.html'));
+            this.fs.copy(this.templatePath('index.html'), this.destinationPath(mediaPath + 'fonts/index.html'));
+            this.fs.copy(this.templatePath('index.html'), this.destinationPath(mediaPath + 'images/index.html'));
 
-			console.log('Added new template to yo manifest...');
+            this.fs.copy(this.templatePath('index.html'), this.destinationPath(templatePath + 'html/index.html'));
 
-			// Generate template files
-			this.fs.copyTpl(
-				this.templatePath('_manifest.xml'),
-				this.destinationPath('joomla/temmplates/' + params.template + '/templateDetails.xml'),
-				params
-			);
+            glob.sync('**', {cwd: this.templatePath()}).map(function (file) {
+                this.fs.copyTpl(this.templatePath(file), this.destinationPath(this.options.joomla.root + '/templates/' + this.options.template.name + '/' + file.replace(/^_/, '')), this.options);
+            }, this);
 
-			console.log('Manifest');
-
-			if (params.folder.js)
-			{
-				this.fs.copyTpl(
-					this.templatePath('index.html'),
-					this.destinationPath('joomla/templates/' + params.template + '/js/index.html')
-				);
-			}
-			
-			if (params.folder.css)
-			{
-				this.fs.copyTpl(
-					this.templatePath('index.html'),
-					this.destinationPath('joomla/templates/' + params.template + '/css/index.html')
-				);
-			}
-			
-			if (params.folder.fonts)
-			{
-				this.fs.copyTpl(
-					this.templatePath('index.html'),
-					this.destinationPath('joomla/templates/' + params.template + '/fonts/index.html')
-				);
-			}
-			
-			if (params.folder.html)
-			{
-				this.fs.copyTpl(
-					this.templatePath('index.html'),
-					this.destinationPath('joomla/templates/' + params.template + '/html/index.html')
-				);
-				
-				// Options for component and module specific overrides
-			}
-			
-			if (params.folder.images)
-			{
-				this.fs.copyTpl(
-					this.templatePath('index.html'),
-					this.destinationPath('joomla/templates/' + params.template + '/images/index.html')
-				);
-			}
-			
-		}
-	},
-
-	install: function () {
-		this.installDependencies({
-			skipInstall: this.options['skip-install']
-		});
-	}
+        }
+    },
+    install: function () {
+        this.installDependencies({
+            skipInstall: this.options['skip-install']
+        });
+    }
 });
