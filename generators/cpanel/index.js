@@ -1,16 +1,24 @@
 'use strict';
-var yeoman = require('yeoman-generator');
+
+var generators = require('yeoman-generator');
+var slugify = require('slugify');
 var chalk = require('chalk');
 var yosay = require('yosay');
 var path = require('path');
 var cp = require('child_process');
 var open = require('open');
 
-module.exports = yeoman.generators.Base.extend({
+module.exports = generators.Base.extend({
+    constructor: function () {
+        generators.Base.apply(this, arguments);
 
+        // add option to skip install
+        // this.option('skip-install');
+        this.slugify = slugify;
+        
+    },
 	initializing: function () {
-		this.pkg = require('../package.json');
-		cp.exec('chrome.exe --load-and-launch-app=/git/chrome-app/', function(err, stdout, stderr){
+		cp.exec('chrome.exe --load-and-launch-app=/Users/Brian/git/joomla-developer-cpanel/app/', function(err, stdout, stderr){
 
 			if (err)
 			{
