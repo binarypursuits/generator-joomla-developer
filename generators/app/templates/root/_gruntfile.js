@@ -8,23 +8,39 @@ module.exports = function(grunt) {
 		pkg: '<json:package.json>',
 
 		endpoints: [],
-
-		instance: {
-			path: __dirname,
-			name:  '<%= joomla.name %>',
-			webroot: '<%= joomla.root %>',
-			url: '<%= joomla.url %>'
-		},
-
-		database: {
-			options: {
-				host: '<%= database.host %>',
-				user: '<%= database.username %>',
-				password: '<%= database.password %>',
-				database: '<%= database.database %>'
-			},
-			prefix: '<%= database.prefix %>'
-		},
+        joomla: {
+            name: "<%= joomla.name %>",
+            version: "<%= joomla.version %>",
+            root: "<%= joomla.root %>",
+            url: "<%= joomla.url %>",
+            secret: "<%= joomla.secret %>",
+            package: "<%= joomla.package %>"
+        },
+        administrator: {
+            id: "<%= administrator.id %>",
+            name: "<%= administrator.name %>",
+            username: "<%= administrator.username %>",
+            email: "<%= administrator.email %>"
+        },
+        database: {
+            options: {
+                host: "<%= database.host %>",
+                username: "<%= database.username %>",
+                password: "<%= database.password %>",
+                database: "<%= database.database %>"
+            },
+            driver: "<%= database.driver %>",                  
+            prefix: "<%= database.prefix %>"
+        },
+        
+        development: {
+            author: "<%= development.author %>",
+            copyright: "<%= development.copyright %>",
+            license: "<%= development.license %>",
+            email: "<%= development.email %>",
+            website: "<%= development.website %>",
+            languagecode: "<%= development.languagecode %>"
+        },
 
 		jshint: {
 			all: [],

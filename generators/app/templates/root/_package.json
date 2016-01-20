@@ -25,6 +25,7 @@
         "grunt-pagespeed": "^1.0.0",
         "grunt-perfbudget": "^0.1.6",
         "grunt-phpcs": "^0.4.0",
+        "grunt-phpdocumentor": "^0.4.1",
         "load-grunt-tasks": "^3.4.0",
         "js-base64": "^2.1.7",
         "mysql": "^2.6.2",
