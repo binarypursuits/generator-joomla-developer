@@ -250,6 +250,8 @@ module.exports = generators.Base.extend({
         },
         development: function()
         {
+            var done = this.async(); 
+            
             var prompt = [{
                 type: 'input',
                 name: 'author',
@@ -357,7 +359,6 @@ module.exports = generators.Base.extend({
             }
         },
         templates: function () {          
-            this.log(yosay(chalk.yellow('End -> Templates')));
             
             this.fs.copy(this.templatePath('custom/index.html'), this.destinationPath('database/index.html'));
             this.fs.copy(this.templatePath('custom/index.html'), this.destinationPath('build/index.html'));
@@ -388,9 +389,6 @@ module.exports = generators.Base.extend({
         },
         clean: function() {
             var done = this.async();
-            
-            // clean up installation folder
-            this.log(yosay(chalk.yellow('End -> Clean')));
 
             rimraf(this.destinationPath(this.options.joomla.root + '/installation/'), done);
         }
@@ -406,7 +404,7 @@ module.exports = generators.Base.extend({
             var done = this.async();
             
             // import joomla database
-            this.log(yosay(chalk.yellow('Install -> Import -> Database')));
+            this.log(yosay(chalk.yellow('Importing Database & Configuring Joomla')));
 
             cp.exec('mysql --user=' + this.options.database.username + ' --password=' + this.options.database.password + ' ' + this.options.database.database + ' < ' + this.destinationPath('database/joomla.sql'), function(error, stdout){
                 
@@ -421,8 +419,6 @@ module.exports = generators.Base.extend({
         },
         params: function() {
             var done = this.async();
-            
-            this.log(yosay(chalk.yellow('Install -> Params -> Set Global Registration Params')));
 
             db.create(this.options.database);
             
@@ -457,9 +453,6 @@ module.exports = generators.Base.extend({
         cleanup: function() {
             var done = this.async();
             
-            // enable registration and set up administrators account
-            this.log(yosay(chalk.yellow('End -> Cleanup')));
-            
             var
                 id, 
                 databasePrefix = this.options.database.prefix,
@@ -478,8 +471,6 @@ module.exports = generators.Base.extend({
             
             var updateAdministratorGroupCallback = function(error, rows, fields) {
                 
-                this.log(yosay(chalk.yellow('End -> Cleanup -> updateAdministratorGroupCallback')));
-                
                 // Get User ID for newly created administrator
                 db.query("UPDATE `" + databasePrefix + "users` SET block=0,activation='' WHERE id=" + id, finished);
                 
@@ -487,18 +478,12 @@ module.exports = generators.Base.extend({
             
             var captureAdministratorPrimaryKeyCallback = function(error, rows, fields) {
                 
-                this.log(yosay(chalk.yellow('End -> Cleanup -> captureAdministratorPrimaryKeyCallback')));
-                
-                console.log('rows -> ', rows);
-                
                 id = rows[0].id;
                 
                 // Get User ID for newly created administrator
                 db.query("UPDATE `" + databasePrefix + "user_usergroup_map` SET group_id=8 WHERE user_id=" + id, updateAdministratorGroupCallback);
                 
             }.bind(this);
-                
-            this.log(yosay(chalk.yellow('End -> Cleanup -> createUserCallBack')));
                 
             // Get User ID for newly created administrator
             db.query("SELECT id FROM `" + databasePrefix + "users` WHERE username='" + administrator.username + "'", captureAdministratorPrimaryKeyCallback);
