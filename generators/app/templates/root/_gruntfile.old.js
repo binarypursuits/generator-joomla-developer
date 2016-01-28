@@ -161,15 +161,33 @@ module.exports = function(grunt) {
 
 	grunt.loadTasks('./tasks');
 
-    // Verson 2.0 Start Here
-    
-    grunt.registerTask("develop", ["watch"]);
-    grunt.registerTask("test-assets", ["jshint", "csslint"]); // Need to add phpcs to this
-    
-    grunt.registerTask("upload-documentation", ['set-environmental-variables:documentation', 'azure-blob:documentation']);
-    grunt.registerTask("documentation", ["clean:docs", "phpdocumentor", "yuidoc", "upload-documentation"]);
-     
-    grunt.registerTask("default", ["test-assets", "documentation"]);
-    // Version 2.0 Ends Here
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-csslint');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-azure');
+	grunt.loadNpmTasks('grunt-s3');
+	grunt.loadNpmTasks('grunt-mysql-dump-import');
+	grunt.loadNpmTasks('grunt-sync');
+
+	grunt.registerTask('update', ['initialize', 'sync']);
+
+	grunt.registerTask('jenkins', ['initialize']);
+
+	grunt.registerTask('cleanup', ['db_import', 'rename', 'open', 'dump']);
+
+	grunt.registerTask('scrub', ['clean']);
+	grunt.registerTask('endpoints', ['initialize', 'joomla-endpoints']);
+	grunt.registerTask('init', ['endpoints', 'grunt-scrape']);
+	grunt.registerTask('aws', ['s3']);
+	//grunt.registerTask('test', ['init', 'jshint','csslint']);
+	grunt.registerTask('test', ['init']);
+	//grunt.registerTask('build', ['test', 'uglify', 'cssmin', 'compress', 'copy']);
+	grunt.registerTask('build', ['test', 'scrub', 'uglify', 'cssmin', 'compress', 'copy', 'azure-blob-upload']);
+	//grunt.registerTask('build', ['test', 'uglify', 'cssmin', 'compress', 'copy', 'aws']);
+	grunt.registerTask('default', ['build']);
 
 };

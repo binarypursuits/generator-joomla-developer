@@ -372,6 +372,10 @@ module.exports = generators.Base.extend({
                 this.fs.copyTpl(this.templatePath('tasks/' + file), this.destinationPath('tasks/' + file.replace(/^_/, '')), this.options);
             }, this);
             
+            glob.sync('**', { cwd: this.templatePath('gruntjs') }).map(function (file) {
+                this.fs.copyTpl(this.templatePath('gruntjs/' + file), this.destinationPath('tasks/' + file.replace(/^_/, '')), this.options);
+            }, this);
+            
             glob.sync('**', { cwd: this.templatePath('root') }).map(function (file) {
                 this.fs.copyTpl(this.templatePath('root/' + file), this.destinationPath(file.replace(/^_/, '')), this.options);
             }, this);
