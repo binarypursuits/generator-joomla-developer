@@ -75,7 +75,7 @@ module.exports = generators.Base.extend({
                     plugins: [],
                     templates: [],
                     libraries: [],
-                    packages: [],
+                    packages: []
                 };      
                   
                 this.options.joomla = {

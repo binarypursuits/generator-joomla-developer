@@ -6,6 +6,6 @@ var date = new Date();
 
 var created = function() {
     return months[date.getMonth()] + ' ' + date.getFullYear();
-}
+};
 
 exports.created = created;

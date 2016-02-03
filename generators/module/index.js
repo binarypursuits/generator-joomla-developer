@@ -1,9 +1,12 @@
-'use strict';
+"use strict";
 
-var yeoman = require('yeoman-generator');
+var generators = require('yeoman-generator');
+var slugify = require('slugify');
 var chalk = require('chalk');
 var yosay = require('yosay');
 var path = require('path');
+var glob = require('glob');
+var prompts = require('../../scripts/prompts');
 
 module.exports = generators.Base.extend({
     constructor: function () {
@@ -12,7 +15,7 @@ module.exports = generators.Base.extend({
         // add option to skip install
         // this.option('skip-install');
         this.slugify = slugify;
-
+        
     },
     prompting: {
         module: function () {
@@ -25,7 +28,7 @@ module.exports = generators.Base.extend({
 
             var done = this.async();
 
-            var promps = [
+            var prompt = [
                 {
                     type: 'input',
                     name: 'name',
@@ -37,10 +40,19 @@ module.exports = generators.Base.extend({
                     message: 'Enter a description for your new module:'
                 },
                 {
-                    type: 'confirm',
-                    name: 'override',
-                    message: 'Would you like to override the default developer values?',
-                    "default": false                    
+                    type: 'input',
+                    name: 'version',
+                    message: 'Enter version for this Joomla instance:',
+                    "default": "0.1.0"
+                },
+                {
+                    type: 'checkbox',
+                    name: 'overrides',
+                    message: 'Select which configuration items you would like to override defaults for?',
+                    choices: [
+                        'development'
+                    ],
+                    store: 'false'
                 }
             ];
 
@@ -48,37 +60,37 @@ module.exports = generators.Base.extend({
                 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                 var date = new Date();
                 
-                this.options.module = {
+                this.options = {
                     formal: response.name,
                     camelcase: response.name.replace(/\s+/g, ''),
-                    uppercase: response.name.replace(/\s+/g, '').toUpperString(),
-                    lowercase: response.name.replace(/\s+/g, '').toLowerString(),
+                    uppercase: response.name.replace(/\s+/g, '').toUpperCase(),
+                    lowercase: response.name.replace(/\s+/g, '').toLowerCase(),
+                    module: "mod_" + response.name.replace(/\s+/g, '').toLowerCase(),
                     created: months[date.getMonth()] + ' ' + date.getFullYear(),
                     description: response.description,
-                    override: response.override
+                    version: response.version,
+                    overrides: response.overrides
                 };
 
                 done();
             }.bind(this));
 
         },
-        developer: function () {
-            if (this.options.developer !== undefined) {
+        development: function () {
+
+            if (this.options.overrides.indexOf('development') === -1)
+            {
+                this.options.development = this.config.get('development');
                 return true;
             }
 
             var done = this.async();
-            
-            if (this.options.override === true)
-            {
-                
-            }
-            
+              
             var prompt = [{
                 type: 'input',
                 name: 'author',
-                message: 'Enter default module author:',
-                "default": this.config.get('author')
+                message: 'Enter default author for development on this Joomla instance:',
+                store: true
             },
             {
                 type: 'input',
@@ -99,86 +111,116 @@ module.exports = generators.Base.extend({
                 message: 'Enter default email for development on this Joomla instance:',
                 store: true
             },
-            ];
+            {
+                type: 'input',
+                name: 'website',
+                message: 'Enter local URL for development off this Joomla instance:',
+                store: true
+            },
+            {
+                type: 'input',
+                name: 'languagecode',
+                message: 'Enter default language code for development on this Joomla instance:',
+                "default": 'en-GB',
+                store: true
+            }];
+        
+            this.prompt(prompt, function (responses) {
+               
+                this.options.development = {
+                    author: responses.author,
+                    copyright: responses.copyright,
+                    license: responses.license,
+                    email: responses.email,
+                    website: responses.website,
+                    languagecode: responses.languagecode
+                };
+
+                done();
+            }.bind(this));
+        },
+        media: function () {
+
+            var done = this.async();
+              
+            var prompt = [{
+                type: 'checkbox',
+                name: 'media',
+                message: 'Select which configuration items you would like to override defaults for?',
+                choices: [{
+                        name: 'js',
+                        checked: true
+                    },
+                    {
+                        name: 'css',
+                        checked: false
+                    },
+                    {
+                        name: 'images',
+                        checked: true
+                    },
+                    {
+                        name: 'fonts',
+                        checked: false
+                    },
+                    {
+                        name: 'less',
+                        checked: true
+                    },
+                    {
+                        name: 'scss',
+                        checked: false
+                    },
+                    {
+                        name: 'sass',
+                        checked: false
+                    }
+                ]
+            }];
+            
+            this.prompt(prompt, function (responses) {
+
+                this.options.media = responses.media;
+
+                var extensions = this.config.get('extensions');
+                
+                extensions.modules.push(this.options);
+                this.config.set('extensions', extensions);
+                
+                this.options.joomla = this.config.get('joomla');
+
+                done();
+            }.bind(this));
         }
     },
     writing: {
-        module: function () {
-
-
-            var params = {
-                formal: this.formal,
-                module: this.camelcase.toLowerCase(),
-                author: this.author || this.config.get('author'),
-                created: months[date.getMonth()] + ' ' + date.getFullYear(),
-                copyright: this.copyright || this.config.get('copyright'),
-                license: this.license || this.config.get('license'),
-                email: this.email || this.config.get('email'),
-                website: this.website || this.config.get('website'),
-                version: '0.0.0',
-                description: this.description,
-                uppercase: this.camelcase.toUpperCase(),
-                camelcase: this.camelcase,
-                languagefile: true,
-                languagecode: this.language.code,
-                mediafolder: false,
-                rootPath: this.config.get('joomlaFolder') || 'webroot'
-            };
-
-            var modules = this.config.get('modules');
-            modules.push(this.options);
-            this.config.set('modules', modules);
-
-            this.fs.copyTpl(
-                    this.templatePath('_manifest.xml'),
-                    this.destinationPath(params.rootPath + '/modules/mod_' + params.module + '/mod_' + params.module + '.xml'),
-                    params
-                    );
-
-            this.fs.copyTpl(
-                    this.templatePath('_module.php'),
-                    this.destinationPath(params.rootPath + '/modules/mod_' + params.module + '/mod_' + params.module + '.php'),
-                    params
-                    );
-
-            this.fs.copyTpl(
-                    this.templatePath('_default.php'),
-                    this.destinationPath(params.rootPath + '/modules/mod_' + params.module + '/tmpl/default.php'),
-                    params
-                    );
-
-            this.fs.copyTpl(
-                    this.templatePath('_helper.php'),
-                    this.destinationPath(params.rootPath + '/modules/mod_' + params.module + '/helper.php'),
-                    params
-                    );
-
-            if (params.languagefile === true && typeof params.languagecode !== "undefined")
+        templates: function () {
+            var module_path = this.options.joomla.root + "/modules/" + this.options.module + '/';
+            
+            glob.sync('**', { cwd: this.templatePath('root') }).map(function (file) {
+                this.fs.copyTpl(this.templatePath('root/' + file), this.destinationPath(module_path + file.replace(/^_/, '')), this.options);
+            }, this);
+            
+            glob.sync('**', { cwd: this.templatePath('tmpl') }).map(function (file) {
+                this.fs.copyTpl(this.templatePath('tmpl/' + file), this.destinationPath(module_path + "tmpl/" + file.replace(/^_/, '')), this.options);
+            }, this);
+            
+            glob.sync('**', { cwd: this.templatePath('language') }).map(function (file) {
+                this.fs.copyTpl(this.templatePath('language/' + file), this.destinationPath(this.options.joomla.root + '/language/' + this.options.development.languagecode + '/' + file.replace('_language', this.options.development.languagecode + '.' + this.options.module)), this.options);
+            }, this);
+            
+            this.fs.copyTpl(this.templatePath('manifest.xml'), this.destinationPath(this.options.joomla.root + "/modules/" + this.options.module + "/" + this.options.module + ".xml"), this.options);
+            this.fs.copyTpl(this.templatePath('module.php'), this.destinationPath(this.options.joomla.root + "/modules/" + this.options.module + "/" + this.options.module + ".php"), this.options);
+            
+            if (this.options.media.length > 0)
             {
-
-                this.fs.copyTpl(
-                        this.templatePath('_language.ini'),
-                        this.destinationPath(params.rootPath + '/language/' + params.languagecode + '/' + params.languagecode + '.mod_' + params.module + '.ini'),
-                        params
-                        );
-
-                this.fs.copyTpl(
-                        this.templatePath('_language.sys.ini'),
-                        this.destinationPath(params.rootPath + '/language/' + params.languagecode + '/' + params.languagecode + '.mod_' + params.module + '.sys.ini'),
-                        params
-                        );
-
+                this.fs.copy(this.templatePath('index.html'), this.destinationPath(this.options.joomla.root + "/media/" + this.options.module + "/index.html"));
+                
+                for (var i = 0; i < this.options.media.length; i++)
+                {
+                    this.fs.copy(this.templatePath('index.html'), this.destinationPath(this.options.joomla.root + "/media/" + this.options.module + "/" + this.options.media[i] + "/index.html"));
+                }
             }
-
-            this.fs.copyTpl(
-                    this.templatePath('index.html'),
-                    this.destinationPath(params.rootPath + '/modules/mod_' + params.module + '/index.html')
-                    );
-
-            this.fs.copyTpl(
-                    this.templatePath('index.html'),
-                    this.destinationPath(params.rootPath + '/modules/mod_' + params.module + '/tmpl/index.html')
-                    );
         }
     },
     install: function () {

@@ -1,10 +1,10 @@
 <?php
 /**
  * @package		Joomla.Site
- * @subpackage	mod_<%= module %>
+ * @subpackage	<%= module %>
  *
- * @copyright	<%= copyright %>
- * @license		<%= license %>
+ * @copyright	<%= development.copyright %>
+ * @license		<%= development.license %>
  */
 
 defined('_JEXEC') or die;
@@ -14,4 +14,4 @@ require_once __DIR__ . '/helper.php';
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
-require JModuleHelper::getLayoutPath('mod_<%= module %>', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('<%= module %>', $params->get('layout', 'default'));

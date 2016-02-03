@@ -21,94 +21,122 @@ module.exports = yeoman.generators.Base.extend({
 		this.pkg = require('../package.json');
 	},
 
-	prompting: function () {
-		var done = this.async();
-		// Have Yeoman greet the user.
-		this.log(yosay(
-			'Welcome to the ' + chalk.red('JoomlaDeveloper') + ' plugin generator!'
-		));
+	prompting: {
+        plugin: function() {
+            var done = this.async();
+            
+            // Have Yeoman greet the user.
+            this.log(yosay(
+                'Welcome to the ' + chalk.red('JoomlaDeveloper') + ' plugin generator!'
+            ));
 
-		var prompts =
-		[
-			{
-				type : 'input',
-				name : 'camelcase',
-				message : 'What is name of the new plugin using CamelCase formatting?',
-				store : true
-			},
-			{
-				type : 'confirm',
-				name : 'languagefile',
-				message : 'Create language files for your plugin?',
-				"default" : true,
-				store : true
-			},
-			{
-				type : 'input',
-				name : 'languagecode',
-				message : 'Default language code to use?',
-				"default" : "en-GB",
-				store : true
-			},
-			{
-				type : 'list',
-				name : 'pluginType',
-				message : 'What group is the plugin you are creating in?',
-				choices: ['Authentication','Captcha','Content','Editors','Editors-xtd','Finder','Quickicon','Search','System','Twofactorauth','User'],
-				store : true
-			},
-			{
-				type : 'checkbox',
-				name : 'includedMethods',
-				message : 'What events do you intent to subscribe too?',
-				choices: [
-					'onUserLogin',
-					'onUserLogout',
-					'onUserAuthenticate',
-					'onUserLoginFailure',
-					'onUserAfterLogin',
-					'onUserBeforeSave',
-					'onUserAfterSave',
-					'onUserBeforeDelete',
-					'onUserAfterDelete',
-					'onExtensionAfterInstall',
-					'onExtensionAfterUninstall',
-					'onExtensionAfterUpdate',
-					'onContentPrepare',
-					'onContentAfterTitle',
-					'onContentBeforeDisplay',
-					'onContentAfterDisplay',
-					'onContentBeforeSave',
-					'onContentAfterSave',
-					'onContentPrepareForm',
-					'onContentPrepareData',
-					'onContentBeforeDelete',
-					'onContentAfterDelete',
-					'onContentChangeState',
-					'onContentSearch',
-					'onContentSearchAreas',
-					'onCategoryChangeState',
-					'onValidateContact',
-					'onSubmitContact',
-					'onGetIcons'
-				],
-				checked: true,
-				store : false
-			}
-		];
+            var prompts =
+            [
+                {
+                    type : 'input',
+                    name : 'camelcase',
+                    message : 'What is name of the new plugin using CamelCase formatting?',
+                    store : true
+                },
+                {
+                    type : 'confirm',
+                    name : 'languagefile',
+                    message : 'Create language files for your plugin?',
+                    "default" : true,
+                    store : true
+                },
+                {
+                    type : 'input',
+                    name : 'languagecode',
+                    message : 'Default language code to use?',
+                    "default" : "en-GB",
+                    store : true
+                },
+                {
+                    type : 'checkbox',
+                    name : 'includedMethods',
+                    message : 'What events do you intent to subscribe too?',
+                    choices: [
+                        'onUserLogin',
+                        'onUserLogout',
+                        'onUserAuthenticate',
+                        'onUserLoginFailure',
+                        'onUserAfterLogin',
+                        'onUserBeforeSave',
+                        'onUserAfterSave',
+                        'onUserBeforeDelete',
+                        'onUserAfterDelete',
+                        'onExtensionAfterInstall',
+                        'onExtensionAfterUninstall',
+                        'onExtensionAfterUpdate',
+                        'onContentPrepare',
+                        'onContentAfterTitle',
+                        'onContentBeforeDisplay',
+                        'onContentAfterDisplay',
+                        'onContentBeforeSave',
+                        'onContentAfterSave',
+                        'onContentPrepareForm',
+                        'onContentPrepareData',
+                        'onContentBeforeDelete',
+                        'onContentAfterDelete',
+                        'onContentChangeState',
+                        'onContentSearch',
+                        'onContentSearchAreas',
+                        'onCategoryChangeState',
+                        'onValidateContact',
+                        'onSubmitContact',
+                        'onGetIcons'
+                    ],
+                    checked: true,
+                    store : false
+                }
+            ];
 
-		this.prompt(prompts, function (props) {
-			this.formal = props.camelcase;
-			this.camelcase = props.camelcase.replace(/\s+/g, '');
-			this.pluginType = props.pluginType.toLowerCase();
-			this.uppercaseType = props.pluginType.toUpperCase();
-                        props.uppercaseType = this.uppercaseType;
-			this.formalType = this.pluginType.charAt(0).toUpperCase() + this.pluginType.slice(1);
-			this.includedMethods = props.includedMethods;
-			this.languagefile = props.languagefile;
-			this.languagecode = props.languagecode;
-			done();
-		}.bind(this));
+            this.prompt(prompts, function (props) {
+                this.formal = props.camelcase;
+                this.camelcase = props.camelcase.replace(/\s+/g, '');
+                this.pluginType = props.pluginType.toLowerCase();
+                this.uppercaseType = props.pluginType.toUpperCase();
+                            props.uppercaseType = this.uppercaseType;
+                this.formalType = this.pluginType.charAt(0).toUpperCase() + this.pluginType.slice(1);
+                this.includedMethods = props.includedMethods;
+                this.languagefile = props.languagefile;
+                this.languagecode = props.languagecode;
+                done();
+            }.bind(this));
+        },
+        type: function() {
+            
+            var done = this.async();
+            
+            var prompts =
+            [
+                {
+                    type : 'list',
+                    name : 'pluginType',
+                    message : 'What group is the plugin you are creating in?',
+                    choices: ['Authentication','Captcha','Content','Editors','Editors-xtd','Finder','Quickicon','Search','System','Twofactorauth','User'],
+                    store : false
+                }
+            ];
+            
+            this.prompt(prompts, function (response) {
+                
+                this.options.type = response.type;
+                
+                done();
+                
+            }.bind(this));
+        },
+        methods: function() {
+            var done = this.async();
+            
+            this.prompt(prompts, function (response) {
+                
+                this.options.type = response.type;
+                
+            }.bind(this));
+        }
 	},
 
 	writing: {

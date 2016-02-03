@@ -3,6 +3,26 @@
 module.exports = function (grunt) {
 
     grunt.config('copy', {
+        jenkins: {
+              files: [
+                {
+                    expand: true,
+                    cwd: '<%= joomla.root %>/',
+                    src: ['**/*'],
+                    dest: '<%= jenkins.apache.webroot %>'
+                }
+            ]
+        },
+        configuration: {
+            src: 'build/configuration.php',
+            dest: "<%= arc.jenkins.apache.webroot %>",
+            options: {
+                process: function(content, srcpath) {
+                    var arc = grunt.config.get('arc');
+                    return grunt.template.process(content, arc);
+                }
+            }
+        },
         main: {
             files: [
                 {

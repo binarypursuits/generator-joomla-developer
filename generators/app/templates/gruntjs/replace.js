@@ -1,19 +1,29 @@
-'use strict';
+"use strict";
 
 module.exports = function (grunt) {
 
-    grunt.config('replace', {
-        all: {
-            src: ['build/scripts.min.js'],
-            dest: 'build/scripts.min.js',
+    grunt.config("replace", {
+        version: {
+            src: "<%= arc.replace.versioning %>",
+            overwrite: true,
             replacements: [
                 {
-                    from: '\'use strict\';',
-                    to: ''
+                    from: "{VERSION}",
+                    to: "<%= pkg.version %>"
+                }
+            ]
+        },
+        minified: {
+            src: "<%= arc.replace.minified %>",
+            overwrite: true,
+            replacements: [
+                {
+                    from: ".js",
+                    to: ".min.js"
                 },
                 {
-                    from: '"use strict";',
-                    to: ''
+                    from: ".css",
+                    to: ".min.css"
                 }
             ]
         }
