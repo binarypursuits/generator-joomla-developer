@@ -25,6 +25,8 @@ module.exports = generators.Base.extend({
     constructor: function () {
         generators.Base.apply(this, arguments);
 
+		this.questions = this.fs.readJSON(__dirname + "/../prompts/questions.json");
+		
         // add option to skip install
         // this.option('skip-install');
         this.slugify = slugify;
@@ -101,30 +103,7 @@ module.exports = generators.Base.extend({
 
             var done = this.async();
             
-            var prompt = [{
-                type: 'input',
-                name: 'name',
-                message: 'Enter administrator\'s name for this Joomla instance:',
-                "default": "Webmaster"
-            },
-            {
-                type: 'input',
-                name: 'username',
-                message: 'Enter administrator\'s username for this Joomla instance:',
-                "default": "webmaster"
-            },
-            {
-                type: 'input',
-                name: 'email',
-                message: 'Enter administrator\'s email for this Joomla instance:',
-                store: true
-            },
-            {
-                type: 'password',
-                name: 'password',
-                message: 'Enter administrator\'s password for this Joomla instance:',
-                "default": "webmaster"
-            }];
+            var prompt = this.questions.administrator;
 
             this.prompt(prompt, function (response) {
                 this.options.administrator = {
@@ -146,51 +125,7 @@ module.exports = generators.Base.extend({
 
             var done = this.async();
             
-            var prompt = [{
-                type: 'list',
-                name: 'driver',
-                message: 'Choose database driver for this Joomla instance:',
-                choices: [
-                    'mysqli',
-                    'mysql'
-                ],
-                "default": "mysqli"
-            },
-            {
-                type: 'input',
-                name: 'host',
-                message: 'Enter database hose for this Joomla instance:',
-                "default": "localhost",
-                store: true
-            },
-            {
-                type: 'input',
-                name: 'username',
-                message: 'Enter database username for this Joomla instance:',
-                "default": "joomla",
-                store: true
-            },
-            {
-                type: 'input',
-                name: 'password',
-                message: 'Enter database user\'s password for this Joomla instance:',
-                "default": "joomla",
-                store: false
-            },
-            {
-                type: 'input',
-                name: 'database',
-                message: 'Enter database name for this Joomla instance:',
-                "default": "joomla",
-                store: false
-            },
-            {
-                type: 'input',
-                name: 'prefix',
-                message: 'Enter database prefix for this Joomla instance:',
-                "default": "jdev_",
-                store: false
-            }];
+            var prompt = this.questions.database;
 
             this.prompt(prompt, function (response) {
                 this.options.database = {
@@ -252,45 +187,12 @@ module.exports = generators.Base.extend({
         {
             var done = this.async(); 
             
-            var prompt = [{
-                type: 'input',
-                name: 'author',
-                message: 'Enter default author for development on this Joomla instance:',
-                store: true
-            },
-            {
-                type: 'input',
-                name: 'copyright',
-                message: 'Enter default copyright for development on this Joomla instance:',
-                store: true
-            },
-            {
-                type: 'input',
-                name: 'license',
-                message: 'Enter default license for development on this Joomla instance:',
-                "default": 'GNU General Public License version 2 or later; see LICENSE.txt',
-                store: true
-            },
-            {
-                type: 'input',
-                name: 'email',
-                message: 'Enter default email for development on this Joomla instance:',
-                store: true
-            },
-            {
-                type: 'input',
-                name: 'website',
-                message: 'Enter local URL for development off this Joomla instance:',
-                store: true
-            },
-            {
-                type: 'input',
-                name: 'languagecode',
-                message: 'Enter default language code for development on this Joomla instance:',
-                "default": 'en-GB',
-                store: true
-            }];
-        
+			if (this.options.development === 'new') {
+                return true;
+            }
+			
+            var prompt = this.questions.development;
+
             this.prompt(prompt, function (responses) {
                 this.options.development = {
                     author: responses.author,

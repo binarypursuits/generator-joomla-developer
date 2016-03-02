@@ -1,0 +1,234 @@
+{
+	"months" : ["January", "February", "March", "April","May","June","July","August","September","October","November","December"],
+	"administration": [
+		{
+			"type": "input",
+			"name": "name",
+			"message": "Enter administrator's name for this Joomla instance:",
+			"default": "Webmaster"
+		},
+		{
+			"type": "input",
+			"name": "username",
+			"message": "Enter administrator's username for this Joomla instance:",
+			"default": "webmaster"
+		},
+		{
+			"type": "input",
+			"name": "email",
+			"message": "Enter administrator's email for this Joomla instance:",
+			"store": true
+		},
+		{
+			"type": "password",
+			"name": "password",
+			"message": "Enter administrator's password for this Joomla instance:",
+			"default": "webmaster"
+		}
+	],
+	"database" : [
+		{
+			"type": "list",
+			"name": "driver",
+			"message": "Choose database driver for this Joomla instance:",
+			"choices": [
+				"mysqli",
+				"mysql"
+			],
+			"default": "mysqli"
+		},
+		{
+			"type": "input",
+			"name": "host",
+			"message": "Enter database hose for this Joomla instance:",
+			"default": "localhost",
+			"store": true
+		},
+		{
+			"type": "input",
+			"name": "username",
+			"message": "Enter database username for this Joomla instance:",
+			"default": "joomla",
+			"store": true
+		},
+		{
+			"type": "input",
+			"name": "password",
+			"message": "Enter database user\"s password for this Joomla instance:",
+			"default": "joomla",
+			"store": false
+		},
+		{
+			"type": "input",
+			"name": "database",
+			"message": "Enter database name for this Joomla instance:",
+			"default": "joomla",
+			"store": false
+		},
+		{
+			"type": "input",
+			"name": "prefix",
+			"message": "Enter database prefix for this Joomla instance:",
+			"default": "jdev_",
+			"store": false
+		}
+	],
+	"development" : [
+		{
+			"type": "input",
+			"name": "author",
+			"message": "Enter default author for development on this Joomla instance:",
+			"store": true
+		},
+		{
+			"type": "input",
+			"name": "copyright",
+			"message": "Enter default copyright for development on this Joomla instance:",
+			"store": true
+		},
+		{
+			"type": "input",
+			"name": "license",
+			"message": "Enter default license for development on this Joomla instance:",
+			"default": "GNU General Public License version 2 or later; see LICENSE.txt",
+			"store": true
+		},
+		{
+			"type": "input",
+			"name": "email",
+			"message": "Enter default email for development on this Joomla instance:",
+			"store": true
+		},
+		{
+			"type": "input",
+			"name": "website",
+			"message": "Enter local URL for development off this Joomla instance:",
+			"store": true
+		},
+		{
+			"type": "input",
+			"name": "languagecode",
+			"message": "Enter default language code for development on this Joomla instance:",
+			"default": "en-GB",
+			"store": true
+		}
+	],
+	"overrides" : [
+		{
+			"type": "checkbox",
+			"name": "overrides",
+			"message": "Check any setting groups you wish to override for this instance:",
+			"choices": [
+				{
+					"name" : "Development",
+					"value" : "development"
+				},
+				{
+					"name" : "Media",
+					"value" : "media"
+				}
+			]
+			
+		}
+	],
+	"media" : [
+		{
+			"type": "checkbox",
+			"name": "media",
+			"message": "Check any setting groups you wish to override for this instance:",
+			"choices": [
+				{
+					"name" : "CSS",
+					"value" : "css",
+					"checked" : true
+				},
+				{
+					"name" : "Images",
+					"value" : "images",
+					"checked" : true
+				},
+				{
+					"name" : "JavaScript",
+					"value" : "js",
+					"checked" : true
+				},
+				{
+					"name" : "Fonts",
+					"value" : "fonts",
+					"checked" : true
+				},
+				{
+					"name" : "LESS",
+					"value" : "less",
+					"checked" : false
+				},
+				{
+					"name" : "SASS",
+					"value" : "sass",
+					"checked" : false
+				},
+				{
+					"name" : "Libraries",
+					"value" : "libs",
+					"checked" : false
+				}
+			]
+			
+		}
+	],
+	"fields" : [
+		{
+			"type": "checkbox",
+			"name": "fields",
+			"message": "Check any setting groups you wish to override for this instance:",
+			"choices": [
+				{
+					"name" : "Alias",
+					"value" : "alias",
+					"checked" : true
+				},
+				{
+					"name" : "Publishing",
+					"value" : "publishing",
+					"checked" : true
+				},
+				{
+					"name" : "ACL",
+					"value" : "acl",
+					"checked" : true
+				},
+				{
+					"name" : "Categories",
+					"value" : "categories",
+					"checked" : true
+				},
+				{
+					"name" : "Tags",
+					"value" : "tags",
+					"checked" : true
+				},
+				{
+					"name" : "Language",
+					"value" : "language",
+					"checked" : true
+				},
+				{
+					"name" : "Associations",
+					"value" : "associations",
+					"checked" : true
+				},
+				{
+					"name" : "Params",
+					"value" : "params",
+					"checked" : true
+				},
+				{
+					"name" : "Metadata",
+					"value" : "metadata",
+					"checked" : true
+				}
+			]
+			
+		}
+	]
+}

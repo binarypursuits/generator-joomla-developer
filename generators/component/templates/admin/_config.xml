@@ -2,11 +2,11 @@
 <config>
 
 	<fieldset
-		name="<%= component %>"
-		label="COM_<%= uppercase %>_FIELD_CONFIG_LABEL"
-		description="COM_<%= uppercase %>_FIELD_CONFIG_DESC">
+		name="<%= component.name %>"
+		label="COM_<%= component.uppercase %>_FIELD_CONFIG_LABEL"
+		description="COM_<%= component.uppercase %>_FIELD_CONFIG_DESC">
 
-	</fieldset><% if (acl) { %>
+	</fieldset><% if (fields.acl) { %>
 
 	<fieldset
 		name="permissions"

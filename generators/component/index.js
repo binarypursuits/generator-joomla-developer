@@ -4,18 +4,20 @@ var generators = require("yeoman-generator");
 var slugify = require("slugify");
 var chalk = require("chalk");
 var yosay = require("yosay");
-var questions = require("../questions");
+var glob = require('glob');
 
 module.exports = generators.Base.extend({
     constructor: function () {
         generators.Base.apply(this, arguments);
+		
+		this.questions = this.fs.readJSON(__dirname + "/../prompts/questions.json");
 
         // add option to skip install
         // this.option("skip-install");
         this.slugify = slugify;
         
     },
-	prompting: {
+	prompting: {		
 		component: function() {
 		
 			if (this.options.joomla !== undefined) {
@@ -45,22 +47,52 @@ module.exports = generators.Base.extend({
 
 				this.options.component = {
 					formal: response.camelcase,
-					camelcase: response.camelcase.replace(/\s+/g, "")
+					camelcase: response.camelcase.replace(/\s+/g, ""),
+					name: response.camelcase.replace(/\s+/g, "").toLowerCase(),
+					uppercase: response.camelcase.replace(/\s+/g, "").toUpperCase()
 				};
 
 				done();
 
 			}.bind(this));
 		},
-		administrator: function() {
+		overrides: function() {
 			
 			if (this.options.joomla !== undefined) {
+                return true;
+            }
+			
+			var done = this.async();
+			
+			var prompt = this.questions.overrides;
+			
+			this.prompt(prompt, function (response) {
+				
+				console.log(response);
+				
+				if (response.overrides.indexOf('development') === -1)
+				{
+					this.options.development = this.config.get('development');
+				}
+				
+				if (response.overrides.indexOf('media') === -1)
+				{
+					this.options.media = this.config.get('media');
+				}
+				
+				done();
+
+			}.bind(this));
+		},
+		development: function() {
+			
+			if (this.options.development !== undefined) {
                 return true;
             }
 
 			var done = this.async();
 
-			var prompt = questions('administrator');
+			var prompt = this.questions.development;
 
 			this.prompt(prompt, function (response) {
 
@@ -68,6 +100,42 @@ module.exports = generators.Base.extend({
 					formal: response.camelcase,
 					camelcase: response.camelcase.replace(/\s+/g, "")
 				};
+
+				done();
+
+			}.bind(this));
+		},
+		media: function() {
+			
+			if (this.options.media !== undefined) {
+                return true;
+            }
+
+			var done = this.async();
+
+			var prompt = this.questions.media;
+
+			this.prompt(prompt, function (response) {
+
+				this.options.media = response.media;
+
+				done();
+
+			}.bind(this));
+		},
+		fields: function() {
+			
+			if (this.options.fields !== undefined) {
+                return true;
+            }
+
+			var done = this.async();
+
+			var prompt = this.questions.fields;
+
+			this.prompt(prompt, function (response) {
+
+				this.options.fields = response.fields;
 
 				done();
 
@@ -81,7 +149,13 @@ module.exports = generators.Base.extend({
 
 			var months = ["January", "February", "March", "April","May","June","July","August","September","October","November","December"];
 			var date = new Date();
+			
+			var adminPath = "<%= joomla.root %>/administrator/components/com_" + this.options.component.name + "/";
 
+            glob.sync('**', { cwd: this.templatePath('admin') }).map(function (file) {
+                this.fs.copyTpl(this.templatePath('admin/' + file), this.destinationPath(adminPath + file.replace(/^_/, '')), this.options);
+            }, this);
+			/*
 			var params = {
 					formal: {
 						component: this.component_formal,
@@ -300,7 +374,7 @@ module.exports = generators.Base.extend({
 
 				async.series(mediaFiles);
 			}
-
+			*/
 			done();
 		}
 	},

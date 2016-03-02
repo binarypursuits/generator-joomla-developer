@@ -13,9 +13,9 @@ defined('_JEXEC') or die;
  * Component Controller
  *
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  */
-class <%= camelcase %>Controller extends JControllerLegacy
+class <%= component.camelcase %>Controller extends JControllerLegacy
 {
 	/**
 	 * @var		string	The default view.
