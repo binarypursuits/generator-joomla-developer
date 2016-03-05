@@ -230,5 +230,276 @@
 			]
 			
 		}
-	]
+	],
+	"mvc" : [
+		{
+			"type": "list",
+			"name": "mvc",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				{
+					"name" : "None - i.e. Create basic folders and index.html files only",
+					"value" : "none"
+				},
+				{
+					"name" : "Generic - i.e. Model would extend JModelItem",
+					"value" : "generic"
+				},
+				{
+					"name" : "List & Edit View - i.e. Creates a list view and an edit view",
+					"value" : "listedit"
+				}
+			]
+		}
+	],
+	"names" : {
+		"generic" : [
+			{
+			"type": "input",
+			"name": "generic",
+			"message": "Enter MVC Path name for your generic classes:"
+			}
+		],
+		"listedit" : [
+			{
+				"type": "input",
+				"name": "list",
+				"message": "Enter MVC Path name for your list classes:"
+			},
+			{
+				"type": "input",
+				"name": "edit",
+				"message": "Enter MVC Path name for your edit classes:"
+			}
+		]
+	},
+	"plugin": [
+		{
+			"type": "list",
+			"name": "type",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				{
+					"name" : "Authentication",
+					"value" : "authentication"
+				},
+				{
+					"name" : "Captcha",
+					"value" : "captcha"
+				},
+				{
+					"name" : "Content",
+					"value" : "content"
+				},
+				{
+					"name" : "Editors",
+					"value" : "editors"
+				},
+				{
+					"name" : "Extensions",
+					"value" : "extensions"
+				},
+				{
+					"name" : "Finder",
+					"value" : "finder"
+				},
+				{
+					"name" : "Quick Icons",
+					"value" : "quickicon"
+				},
+				{
+					"name" : "System",
+					"value" : "system"
+				},
+				{
+					"name" : "User",
+					"value" : "user"
+				},
+				{
+					"name" : "Component Events (Contact, Installer & Menu Components)",
+					"value" : "component"
+				}
+			]
+		}
+	],
+	"authentication": [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": ["onUserAuthenticate"]
+		}
+	],
+	"captcha" : [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				{
+					"name": "onInit",
+					"value": "onInit-Captcha"
+				},
+				{
+					"name": "onCheckAnswer",
+					"value": "onCheckAnswer"
+				},
+				{
+					"name": "onDisplay",
+					"value": "onDisplay"
+				}
+			]
+		}
+	],
+	"content" : [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onContentPrepare",
+				"onContentAfterTitle",
+				"onContentBeforeDisplay",
+				"onContentAfterDisplay",
+				"onContentBeforeSave",
+				"onContentAfterSave",
+				"onContentPrepareForm",
+				"onContentPrepareData",
+				"onContentBeforeDelete",
+				"onContentAfterDelete",
+				"onContentChangeState",
+				"onContentSearch",
+				"onContentSearchAreas"
+			]
+		}
+		
+	],
+	"editors" : [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				{
+					"name": "onInit",
+					"value": "onInit-Editors"
+				},
+				{
+					"name": "onSave",
+					"value": "onSave"
+				},
+				{
+					"name": "onSetContent",
+					"value": "onSetContent"
+				},
+				{
+					"name": "onDisplay",
+					"value": "onDisplay"
+				},
+				{
+					"name": "onGetContent",
+					"value": "onGetContent"
+				},
+				{
+					"name": "onGetInsertMethod",
+					"value": "onGetInsertMethod"
+				}
+			]
+		}
+		
+	],
+	"extensions" : [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onExtensionAfterInstall",
+				"onExtensionAfterUnInstall",
+				"onExtensionAfterUpdate"
+			]
+		}
+		
+	],
+	"finder" : [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onFinderCategoryChangeState",
+				"onFinderChangeState",
+				"onFinderBeforeDelete",
+				"onFinderAfterDelete",
+				"onFinderBeforeSave",
+				"onFinderAfterSave"
+			]
+		}
+		
+	],
+	"quickicons" : [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": ["onGetIcons"]
+		}
+		
+	],
+	"system" : [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onAfterInitialise",
+				"onAfterRoute",
+				"onAfterDispatch",
+				"onAfterRender",
+				"onBeforeRender",
+				"onBeforeCompileHead",
+				"onSearch",
+				"onSearchAreas",
+				"onGetWebServices"
+			]
+		}
+		
+	],
+	"user" : [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onUserBeforeSave",
+				"onUserAfterSave",
+				"onUserBeforeDelete",
+				"onUserAfterDelete",
+				"onUserLogin",
+				"onUserLoginFailure",
+				"onUserAfterLogin",
+				"onUserLogout",
+				"onUserAuthenticate",
+				"onUserAuthorisation",
+				"onUserAuthorisationFailure"				
+			]
+		}
+		
+	],
+	"component" : [
+		{
+			"type": "checkbox",
+			"name": "methods",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onValidateContact",
+				"onSubmitContact",
+				"onInstallerBeforeInstallation",
+				"onInstallerBeforeInstaller",
+				"onInstallerAfterInstaller",
+				"onAfterGetMenuTypeOptions"
+			]
+		}
+		
+	] 
 }

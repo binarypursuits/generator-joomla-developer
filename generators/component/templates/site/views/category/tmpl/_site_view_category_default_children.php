@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -30,7 +30,7 @@ if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 			<?php if ($this->params->get('show_subcat_desc') == 1) :?>
 			<?php if ($child->description) : ?>
 				<div class="category-desc">
-					<?php echo JHtml::_('content.prepare', $child->description, '', 'com_<%= component %>.category'); ?>
+					<?php echo JHtml::_('content.prepare', $child->description, '', 'com_<%= component.name %>.category'); ?>
 				</div>
 			<?php endif; ?>
             <?php endif; ?>

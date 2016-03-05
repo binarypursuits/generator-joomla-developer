@@ -1,10 +1,10 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage	com_<%= component %>
+ * @subpackage	com_<%= component.name %>
  *
- * @copyright	<%= copyright %>
- * @license		<%= license %>
+ * @copyright	<%= development.copyright %>
+ * @license		<%= development.license %>
  */
 <%
 var jsonEncode = [];
@@ -36,13 +36,13 @@ else
 defined('_JEXEC') or die;
 
 /**
- * <%= views.standard[index].detailview.camelcase %> Table class
+ * <%= editmvc.camelcase %> Table class
  *
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.5
  */
-class <%= camelcase %>Table<%= views.standard[index].detailview.camelcase %> extends JTable
+class <%= component.camelcase %>Table<%= editmvc.camelcase %> extends JTable
 {<% if (jsonEncode) { %>
 	/**
 	 * Ensure the params, metadata and images are json encoded in the bind method
@@ -59,9 +59,9 @@ class <%= camelcase %>Table<%= views.standard[index].detailview.camelcase %> ext
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__<%= component %>_<%= views.standard[index].detailview.lowercase %>', 'id', $db);<% if (db.fields.tags) { %>
-		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_<%= component %>.<%= views.standard[index].detailview.lowercase %>'));
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_<%= component %>.<%= views.standard[index].detailview.lowercase %>'));<% } %>
+		parent::__construct('#__<%= component.name %>_<%= views.standard[index].detailview.lowercase %>', 'id', $db);<% if (db.fields.tags) { %>
+		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>'));
+		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>'));<% } %>
 	}
 
 	/**
@@ -110,7 +110,7 @@ class <%= camelcase %>Table<%= views.standard[index].detailview.camelcase %> ext
 			}<% } %>
 			<% if (db.fields.alias) {  %>
 			// Verify that the alias is unique
-				$table = JTable::getInstance('<%= views.standard[index].detailview.lowercase %>', '<%= camelcase %>Table');
+				$table = JTable::getInstance('<%= views.standard[index].detailview.lowercase %>', '<%= component.camelcase %>Table');
 
 			if ($table->load(array('alias' => $this->alias<% if (db.fields.categories) { %>, 'catid' => $this->catid)<% } %>) && ($table->id != $this->id || $this->id == 0))
 				{
@@ -147,7 +147,7 @@ class <%= camelcase %>Table<%= views.standard[index].detailview.camelcase %> ext
 		// Check for existing name
 		$query = $this->_db->getQuery(true)
 			->select($this->_db->quoteName('id'))
-			->from($this->_db->quoteName('#__<%= component %>_<%= views.standard[index].detailview.lowercase %>'))
+			->from($this->_db->quoteName('#__<%= component.name %>_<%= views.standard[index].detailview.lowercase %>'))
 			->where($this->_db->quoteName('title') . ' = ' . $this->_db->quote($this->title))<% if (db.fields.category) { %>
 			->where($this->_db->quoteName('catid') . ' = ' . (int) $this->catid)<% } %>;
 

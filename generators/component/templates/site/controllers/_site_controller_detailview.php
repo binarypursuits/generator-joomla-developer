@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -11,10 +11,10 @@ defined('_JEXEC') or die;
 
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.5
  */
-class <%= camelcase %>Controller<%= views.standard[index].detailview.camelcase %> extends JControllerForm
+class <%= component.camelcase %>Controller<%= editmvc.camelcase %> extends JControllerForm
 {
 	/**
 	 * @since   1.6
@@ -267,7 +267,7 @@ class <%= camelcase %>Controller<%= views.standard[index].detailview.camelcase %
 		$id = $this->input->getInt('id');
 
 		// Get the model, requiring published items
-		$modelLink	= $this->getModel('<%= views.standard[index].detailview.camelcase %>', '', array('ignore_request' => true));
+		$modelLink	= $this->getModel('<%= editmvc.camelcase %>', '', array('ignore_request' => true));
 		$modelLink->setState('filter.published', 1);
 
 		// Get the item
@@ -289,7 +289,7 @@ class <%= camelcase %>Controller<%= views.standard[index].detailview.camelcase %
 		}
 
 		// Check whether category access level allows access.
-		$modelCat = $this->getModel('Category', '<%= camelcase %>Model', array('ignore_request' => true));
+		$modelCat = $this->getModel('Category', '<%= component.camelcase %>Model', array('ignore_request' => true));
 		$modelCat->setState('filter.published', 1);
 
 		// Get the category

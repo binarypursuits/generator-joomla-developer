@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -13,10 +13,10 @@ defined('_JEXEC') or die;
  * Weblinks helper.
  *
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.6
  */
-class <%= camelcase %>Helper extends JHelperContent
+class <%= component.camelcase %>Helper extends JHelperContent
 {
 	/**
 	 * Configure the Linkbar.
@@ -33,7 +33,7 @@ class <%= camelcase %>Helper extends JHelperContent
 			for (var i = 0; i < views.standard.length; i++) { %>
 			JHtmlSidebar::addEntry(
 				JText::_('COM_<%= uppercase %>_SUBMENU_<%= views.standard[i].listview.uppercase %>'),
-				'index.php?option=com_<%= component %>&view=<%= views.standard[i].listview.lowercase %>',
+				'index.php?option=com_<%= component.name %>&view=<%= views.standard[i].listview.lowercase %>',
 				$vName == '<%= views.standard[i].listview.lowercase %>'
 			);
 			<%}
@@ -41,7 +41,7 @@ class <%= camelcase %>Helper extends JHelperContent
 		if (db.fields.categories) { %>
 		JHtmlSidebar::addEntry(
 			JText::_('COM_<%= uppercase %>_SUBMENU_CATEGORIES'),
-			'index.php?option=com_categories&extension=com_<%= component %>',
+			'index.php?option=com_categories&extension=com_<%= component.name %>',
 			$vName == 'categories'
 		);<% } %>
 	}

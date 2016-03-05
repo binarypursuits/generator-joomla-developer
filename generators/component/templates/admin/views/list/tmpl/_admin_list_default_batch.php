@@ -1,10 +1,10 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage	com_<%= component %>
+ * @subpackage	com_<%= component.name %>
  *
- * @copyright	<%= copyright %>
- * @license		<%= license %>
+ * @copyright	<%= development.copyright %>
+ * @license		<%= development.license %>
  */
 
 defined('_JEXEC') or die;
@@ -39,7 +39,7 @@ $published = $this->state->get('filter.state');<% } %>
 			<?php if ($published >= 0) : ?>
 				<div class="control-group span6">
 					<div class="controls">
-						<?php echo JHtml::_('batch.item', 'com_<%= component %>'); ?>
+						<?php echo JHtml::_('batch.item', 'com_<%= component.name %>'); ?>
 					</div>
 				</div>
 			<?php endif; ?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -13,24 +13,24 @@ defined('_JEXEC') or die;
  * This models supports retrieving lists of article categories.
  *
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.6
  */
-class <%= camelcase %>ModelCategories extends JModelList
+class <%= component.camelcase %>ModelCategories extends JModelList
 {
 	/**
 	 * Model context string.
 	 *
 	 * @var		string
 	 */
-	public $_context = 'com_<%= component %>.categories';
+	public $_context = 'com_<%= component.name %>.categories';
 
 	/**
 	 * The category context (allows other extensions to derived from this model).
 	 *
 	 * @var		string
 	 */
-	protected $_extension = 'com_<%= component %>';
+	protected $_extension = 'com_<%= component.name %>';
 
 	private $_parent = null;
 
@@ -100,7 +100,7 @@ class <%= camelcase %>ModelCategories extends JModelList
 			}
 			$options = array();
 			$options['countItems'] = $params->get('show_cat_num_links', 1) || !$params->get('show_empty_categories_cat', 0);
-			$categories = JCategories::getInstance('<%= camelcase %>', $options);
+			$categories = JCategories::getInstance('<%= component.camelcase %>', $options);
 			$this->_parent = $categories->get($this->getState('filter.parentId', 'root'));
 			if (is_object($this->_parent))
 			{

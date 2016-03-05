@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -20,9 +20,9 @@ $params = &$this->item->params;
 $user = JFactory::getUser();
 
 // Check if user is allowed to add/edit based on weblinks permissinos.
-$canEdit = $user->authorise('core.edit', 'com_<%= component %>.category.' . $this->category->id);
-$canCreate = $user->authorise('core.create', 'com_<%= component %>');
-$canEditState = $user->authorise('core.edit.state', 'com_<%= component %>');
+$canEdit = $user->authorise('core.edit', 'com_<%= component.name %>.category.' . $this->category->id);
+$canCreate = $user->authorise('core.create', 'com_<%= component.name %>');
+$canEditState = $user->authorise('core.edit.state', 'com_<%= component.name %>');
 
 $n = count($this->items);
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -128,7 +128,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							}
 						?>
 						</div>
-						<?php $tagsData = $item->tags->getItemTags('com_<%= component %>.weblink', $item->id); ?>
+						<?php $tagsData = $item->tags->getItemTags('com_<%= component.name %>.weblink', $item->id); ?>
 						<?php if ($this->params->get('show_tags', 1)) : ?>
 							<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
 							<?php echo $this->item->tagLayout->render($tagsData); ?>

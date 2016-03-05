@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -13,10 +13,10 @@ defined('_JEXEC') or die;
  * HTML View class for the WebLinks component
  *
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.5
  */
-class <%= camelcase %>ViewCategory extends JViewCategory
+class <%= component.camelcase %>ViewCategory extends JViewCategory
 {
 	/**
 	 * Execute and display a template script.
@@ -37,7 +37,7 @@ class <%= camelcase %>ViewCategory extends JViewCategory
 
 			if ($item->params->get('count_clicks', $this->params->get('count_clicks')) == 1)
 			{
-				$item->link = JRoute::_('index.php?option=com_<%= component %>&task=<%= views.standard[index].detailview.lowercase %>.go&id=' . $item->id);
+				$item->link = JRoute::_('index.php?option=com_<%= component.name %>&task=<%= views.standard[index].detailview.lowercase %>.go&id=' . $item->id);
 			}
 			else
 			{
@@ -80,15 +80,15 @@ class <%= camelcase %>ViewCategory extends JViewCategory
 
 		$id = (int) @$menu->query['id'];
 
-		if ($menu && ($menu->query['option'] != 'com_<%= component %>' || $id != $this->category->id))
+		if ($menu && ($menu->query['option'] != 'com_<%= component.name %>' || $id != $this->category->id))
 		{
 			$this->params->set('page_subheading', $this->category->title);
 			$path = array(array('title' => $this->category->title, 'link' => ''));
 			$category = $this->category->getParent();
 
-			while (($menu->query['option'] != 'com_<%= component %>' || $id != $category->id) && $category->id > 1)
+			while (($menu->query['option'] != 'com_<%= component.name %>' || $id != $category->id) && $category->id > 1)
 			{
-				$path[] = array('title' => $category->title, 'link' => <%= camelcase %>HelperRoute::getCategoryRoute($category->id));
+				$path[] = array('title' => $category->title, 'link' => <%= component.camelcase %>HelperRoute::getCategoryRoute($category->id));
 				$category = $category->getParent();
 			}
 

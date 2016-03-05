@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -13,10 +13,10 @@ defined('_JEXEC') or die;
  * HTML View class for the WebLinks component
  *
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.5
  */
-class <%= camelcase %>View<%= views.standard[index].detailview.camelcase %> extends JViewLegacy
+class <%= component.camelcase %>View<%= editmvc.camelcase %> extends JViewLegacy
 {
 	protected $form;
 	protected $item;
@@ -35,11 +35,11 @@ class <%= camelcase %>View<%= views.standard[index].detailview.camelcase %> exte
 
 		if (empty($this->item->id))
 		{
-			$authorised = ($user->authorise('core.create', 'com_<%= component %>')<% if (db.fields.categories) { %> || (count($user->getAuthorisedCategories('com_<%= component %>', 'core.create'))))<% } %>;
+			$authorised = ($user->authorise('core.create', 'com_<%= component.name %>')<% if (db.fields.categories) { %> || (count($user->getAuthorisedCategories('com_<%= component.name %>', 'core.create'))))<% } %>;
 		}
 		else
 		{
-			$authorised = $user->authorise('core.edit'<% if (db.fields.categories) { %>, 'com_<%= component %>.category.'.$this->item->catid)<% } %>;
+			$authorised = $user->authorise('core.edit'<% if (db.fields.categories) { %>, 'com_<%= component.name %>.category.'.$this->item->catid)<% } %>;
 		}
 
 		if ($authorised !== true)

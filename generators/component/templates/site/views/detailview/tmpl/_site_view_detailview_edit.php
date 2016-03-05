@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -34,7 +34,7 @@ $params = $this->state->get('params');
 		<?php echo $this->escape($this->params->get('page_heading')); ?>
 	</h1>
 	<?php endif; ?>
-	<form action="<?php echo JRoute::_('index.php?option=com_<%= component %>&view=form&w_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+	<form action="<?php echo JRoute::_('index.php?option=com_<%= component.name %>&view=form&w_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
 		<div class="btn-toolbar">
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('<%= views.standard[index].detailview.lowercase %>.save')">
@@ -64,7 +64,7 @@ $params = $this->state->get('params');
 			<?php echo $this->form->renderField('version_note'); ?>
 		<?php endif; ?>
 
-		<?php if ($this->user->authorise('core.edit.state', 'com_<%= component %>.<%= views.standard[index].detailview.lowercase %>')) : ?>
+		<?php if ($this->user->authorise('core.edit.state', 'com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>')) : ?>
 			<?php echo $this->form->renderField('state'); ?>
 		<?php endif; ?>
 		<?php echo $this->form->renderField('language'); ?>

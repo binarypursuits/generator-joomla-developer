@@ -1,10 +1,10 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage	com_<%= component %>
+ * @subpackage	com_<%= component.name %>
  *
- * @copyright	<%= copyright %>
- * @license		<%= license %>
+ * @copyright	<%= development.copyright %>
+ * @license		<%= development.license %>
  */
 
 defined('_JEXEC') or die;
@@ -13,10 +13,10 @@ defined('_JEXEC') or die;
  * Methods supporting a list of weblink records.
  *
  * @package     Joomla.Administrator
- * @subpackage  com<%= component %>
+ * @subpackage  com<%= component.name %>
  * @since       1.6
  */
-class <%= camelcase %>Model<%= views.standard[index].listview.camelcase %> extends JModelList
+class <%= component.camelcase %>Model<%= listmvc.camelcase %> extends JModelList
 {
 	/**
 	 * Constructor.
@@ -82,7 +82,7 @@ class <%= camelcase %>Model<%= views.standard[index].listview.camelcase %> exten
 		$this->setState('filter.tag', $tag);
 		<% } %>
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_<%= component %>');
+		$params = JComponentHelper::getParams('com_<%= component.name %>');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -139,7 +139,7 @@ class <%= camelcase %>Model<%= views.standard[index].listview.camelcase %> exten
 				'a.language'<% } %>
 			)
 		);
-		$query->from($db->quoteName('#__<%= component %>_<%= views.standard[index].detailview.lowercase %>') . ' AS a');
+		$query->from($db->quoteName('#__<%= component.name %>_<%= views.standard[index].detailview.lowercase %>') . ' AS a');
 		<% if (db.fields.language) { %>
 		// Join over the language
 		$query->select('l.title AS language_title')
@@ -217,7 +217,7 @@ class <%= camelcase %>Model<%= views.standard[index].listview.camelcase %> exten
 				->join(
 					'LEFT', $db->quoteName('#__contentitem_tag_map', 'tagmap')
 					. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
-					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com<%= component %>.weblink')
+					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com<%= component.name %>.weblink')
 				);
 		}<% } %>
 

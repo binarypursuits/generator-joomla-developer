@@ -15,7 +15,7 @@
 			id="contenthistory"
 			name="contenthistory"
 			type="contenthistory"
-			data-typeAlias="com_<%= component %>.<%= views.standard[index].detailview.lowercase %>"
+			data-typeAlias="com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>"
 			label="JTOOLBAR_VERSIONS"
 		/><% } %>
 
@@ -45,7 +45,7 @@
 			description="COM_<%= uppercase %>_FIELD_DESCRIPTION_DESC"
 			filter="safehtml"
 			label="JGLOBAL_DESCRIPTION"
-			asset_id="com_<%= component %>"
+			asset_id="com_<%= component.name %>"
 		/><% } %>
 
 		<field
@@ -64,7 +64,7 @@
 			name="catid"
 			type="categoryedit"
 			description="COM_<%= uppercase %>_FIELD_CATEGORY_DESC"
-			extension="com_<%= component %>"
+			extension="com_<%= component.name %>"
 			label="JCATEGORY"
 			required="true"
 		/><% } %>

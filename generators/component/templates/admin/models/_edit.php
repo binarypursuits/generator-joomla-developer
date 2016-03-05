@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -10,13 +10,13 @@
 defined('_JEXEC') or die;
 
 /**
- * <%= camelcase %> model.
+ * <%= component.camelcase %> model.
  *
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.5
  */
-class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> extends JModelAdmin
+class <%= component.camelcase %>Model<%= editmvc.camelcase %> extends JModelAdmin
 {
 
 	/**
@@ -25,7 +25,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 	 * @var      string
 	 * @since    3.2
 	 */
-	public $typeAlias = 'com_<%= component %>.<%= views.standard[index].detailview.lowercase %>';
+	public $typeAlias = 'com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>';
 
 	/**
 	 * The prefix to use with controller messages.
@@ -56,7 +56,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 
 			if ($record->catid)
 			{
-				return $user->authorise('core.delete', 'com_<%= component %>.category.'.(int) $record->catid);
+				return $user->authorise('core.delete', 'com_<%= component.name %>.category.'.(int) $record->catid);
 			}
 			else
 			{
@@ -80,7 +80,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 
 		if (!empty($record->catid))
 		{
-			return $user->authorise('core.edit.state', 'com_<%= component %>.category.'.(int) $record->catid);
+			return $user->authorise('core.edit.state', 'com_<%= component.name %>.category.'.(int) $record->catid);
 		}
 		else
 		{
@@ -99,7 +99,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 	 *
 	 * @since   1.6
 	 */
-	public function getTable($type = '<%= views.standard[index].detailview.camelcase %>', $prefix = '<%= camelcase %>Table', $config = array())
+	public function getTable($type = '<%= editmvc.camelcase %>', $prefix = '<%= component.camelcase %>Table', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -117,7 +117,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_<%= component %>.<%= views.standard[index].detailview.lowercase %>', '<%= views.standard[index].detailview.lowercase %>', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>', '<%= views.standard[index].detailview.lowercase %>', array('control' => 'jform', 'load_data' => $loadData));
 
 		if (empty($form))
 		{
@@ -166,7 +166,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_<%= component %>.edit.<%= views.standard[index].detailview.lowercase %>.data', array());
+		$data = JFactory::getApplication()->getUserState('com_<%= component.name %>.edit.<%= views.standard[index].detailview.lowercase %>.data', array());
 
 		if (empty($data))
 		{
@@ -176,11 +176,11 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 			if ($this->getState('<%= views.standard[index].detailview.lowercase %>.id') == 0)
 			{
 				$app = JFactory::getApplication();
-				$data->set('catid', $app->input->get('catid', $app->getUserState('com_<%= component %>.<%= views.standard[index].detailview.lowercase %>s.filter.category_id'), 'int'));
+				$data->set('catid', $app->input->get('catid', $app->getUserState('com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>s.filter.category_id'), 'int'));
 			}<% } %>
 		}
 
-		$this->preprocessData('com_<%= component %>.<%= views.standard[index].detailview.lowercase %>', $data);
+		$this->preprocessData('com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>', $data);
 
 		return $data;
 	}
@@ -211,7 +211,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 			if (!empty($item->id))
 			{
 				$item->tags = new JHelperTags;
-				$item->tags->getTagIds($item->id, 'com_<%= component %>.<%= views.standard[index].detailview.lowercase %>');
+				$item->tags->getTagIds($item->id, 'com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>');
 				$item->metadata['tags'] = $item->tags;
 			}<% } %>
 		}
@@ -251,7 +251,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true)
 					->select('MAX(ordering)')
-					->from($db->quoteName('#__<%= component %>_<%= views.standard[index].detailview.lowercase %>'));
+					->from($db->quoteName('#__<%= component.name %>_<%= views.standard[index].detailview.lowercase %>'));
 
 				$db->setQuery($query);
 				$max = $db->loadResult();

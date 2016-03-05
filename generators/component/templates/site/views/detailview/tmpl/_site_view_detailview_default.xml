@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
 	<layout
-		title="com_<%= component %>_<%= views.standard[index].detailview.lowercase %>_view_default_title" option="com_<%= component %>_<%= views.standard[index].detailview.lowercase %>_view_default_option">
+		title="com_<%= component.name %>_<%= views.standard[index].detailview.lowercase %>_view_default_title" option="com_<%= component.name %>_<%= views.standard[index].detailview.lowercase %>_view_default_option">
 		<help
 			key="JHELP_MENUS_MENU_ITEM_<%= views.standard[index].detailview.uppercase %>_SUBMIT"
 		/>
 		<message>
-			<![CDATA[com_<%= component %>_<%= views.standard[index].detailview.lowercase %>_view_default_desc]]>
+			<![CDATA[com_<%= component.name %>_<%= views.standard[index].detailview.lowercase %>_view_default_desc]]>
 		</message>
 	</layout>
 	<!-- Add fields to the parameters object for the layout. -->

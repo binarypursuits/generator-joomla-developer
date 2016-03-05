@@ -68,8 +68,6 @@ module.exports = generators.Base.extend({
 			
 			this.prompt(prompt, function (response) {
 				
-				console.log(response);
-				
 				if (response.overrides.indexOf('development') === -1)
 				{
 					this.options.development = this.config.get('development');
@@ -92,14 +90,11 @@ module.exports = generators.Base.extend({
 
 			var done = this.async();
 
-			var prompt = this.questions.development;
+			var prompts = this.questions.development;
 
-			this.prompt(prompt, function (response) {
+			this.prompt(prompts, function (response) {
 
-				this.options.component = {
-					formal: response.camelcase,
-					camelcase: response.camelcase.replace(/\s+/g, "")
-				};
+				this.options.development = response;
 
 				done();
 
@@ -123,9 +118,74 @@ module.exports = generators.Base.extend({
 
 			}.bind(this));
 		},
+		mvc: function() {
+			if (this.options.mvc !== undefined) {
+                return true;
+            }
+
+			var done = this.async();
+
+			var prompt = this.questions.mvc;
+
+			this.prompt(prompt, function (response) {
+
+				this.options.mvc = response.mvc;
+
+				done();
+
+			}.bind(this));
+		},
+		generic: function() {
+			if (this.options.mvc !== "generic") {
+                return true;
+            }
+
+			var done = this.async();
+
+			var prompt = this.questions.names.generic;
+
+			this.prompt(prompt, function (response) {
+
+				this.options.generic = {
+					name: response.generic
+				};
+
+				done();
+
+			}.bind(this));
+		},
+		listedit: function() {
+			if (this.options.mvc !== "listedit") {
+                return true;
+            }
+
+			var done = this.async();
+
+			var prompt = this.questions.names.listedit;
+
+			this.prompt(prompt, function (response) {
+
+				this.options.listmvc = {
+					formal: response.listedit.list,
+					camelcase: response.listedit.list.replace(/\s+/g, ""),
+					name: response.listedit.list.replace(/\s+/g, "").toLowerCase(),
+					uppercase: response.listedit.list.replace(/\s+/g, "").toUpperCase()
+				};
+
+				this.options.editmvc = {
+					formal: response.listedit.edit,
+					camelcase: response.listedit.edit.replace(/\s+/g, ""),
+					name: response.listedit.edit.replace(/\s+/g, "").toLowerCase(),
+					uppercase: response.listedit.edit.replace(/\s+/g, "").toUpperCase()
+				};
+
+				done();
+
+			}.bind(this));
+		},
 		fields: function() {
 			
-			if (this.options.fields !== undefined) {
+			if (this.options.mvc !== "listedit") {
                 return true;
             }
 
@@ -143,14 +203,90 @@ module.exports = generators.Base.extend({
 		}
 	},
 	writing: {
-		component: function () {
+		component: function (done) {
+			
+			var config = this.config.getAll();
+			
+			var createFolders = function(done) {
+				
+				var index = '**/index.html';
+				
+				if (!done)
+				{
+					index = '**/*index.html';
+				}
+				
+				var path = config.joomla.root + "/administrator/components/com_" + this.options.component.name + "/";
+				glob.sync(index, { cwd: this.templatePath('admin/') }).map(function (file) {
+					this.fs.copyTpl(this.templatePath('admin/' + file), this.destinationPath(path + file), this.options);
+				}, this);
+				
+				path = config.joomla.root + "/components/com_" + this.options.component.name + "/";
+				glob.sync(index, { cwd: this.templatePath('site/') }).map(function (file) {
+					this.fs.copyTpl(this.templatePath('site/' + file), this.destinationPath(path + file), this.options);
+				}, this);
+				
+				path = config.joomla.root + "/media/com_" + this.options.component.name + "/";
+				glob.sync(index, { cwd: this.templatePath('media/') }).map(function (file) {
+					
+					var test = file.replace('/index.html','');
+					if (this.options.media.indexOf(test) > -1)
+					{
+						this.fs.copyTpl(this.templatePath('media/' + file), this.destinationPath(path + file), this.options);
+					}
+					
+				}, this);
+				
+				if (done)
+				{
+					done();
+				}
+				
+			}.bind(this);
+			
+			var processGlobPattern = function(pattern, replace, replacement) {
+				
+				var path = config.joomla.root + "/administrator/components/com_" + this.options.component.name + "/";
+				glob.sync(pattern, { cwd: this.templatePath('admin/') }).map(function (file) {
+					this.fs.copyTpl(this.templatePath('admin/' + file), this.destinationPath(path + file.replace(replace, replacement)), this.options);
+				}, this);
+				
+				path = config.joomla.root + "/components/com_" + this.options.component.name + "/";
+				glob.sync(pattern, { cwd: this.templatePath('site/') }).map(function (file) {
+					this.fs.copyTpl(this.templatePath('site/' + file), this.destinationPath(path + file.replace(replace, replacement)), this.options);
+				}, this);
+				
+			}.bind(this);
+		
+			if (this.options.mvc === "none")
+			{
+				createFolders(done);
+			}
+			else
+			{
+				createFolders(false);
+			}
+
+			var createGenericMVC = function(done) {
+				
+				processGlobPattern('**/_generic.php', '_generic', this.options.generic.name);
+				done();
+				
+			}.bind(this);
+			
+			var createListViewEditMVC = function(done) {
+				processGlobPattern('**/_list.php', '_list', this.options.list.name);
+				processGlobPattern('**/_edit.php', '_edit', this.options.edit.name);
+				done();
+				
+			}.bind(this);
+			
 
 			var done = this.async();
-
 			var months = ["January", "February", "March", "April","May","June","July","August","September","October","November","December"];
 			var date = new Date();
 			
-			var adminPath = "<%= joomla.root %>/administrator/components/com_" + this.options.component.name + "/";
+			var adminPath = this.options.joomla.root + "/administrator/components/com_" + this.options.component.name + "/";
 
             glob.sync('**', { cwd: this.templatePath('admin') }).map(function (file) {
                 this.fs.copyTpl(this.templatePath('admin/' + file), this.destinationPath(adminPath + file.replace(/^_/, '')), this.options);

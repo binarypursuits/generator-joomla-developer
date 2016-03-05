@@ -1,22 +1,22 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage	com_<%= component %>
+ * @subpackage	com_<%= component.name %>
  *
- * @copyright	<%= copyright %>
- * @license		<%= license %>
+ * @copyright	<%= development.copyright %>
+ * @license		<%= development.license %>
  */
 
 defined('_JEXEC') or die;
 
 /**
- * View class for a list of <%= views.standard[index].listview.lowercase %>.
+ * View class for a list of <%= listmvc.name %>.
  *
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.5
  */
-class <%= camelcase %>View<%= views.standard[index].listview.camelcase %> extends JViewLegacy
+class <%= component.camelcase %>View<%= listmvc.camelcase %> extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;
@@ -33,7 +33,7 @@ class <%= camelcase %>View<%= views.standard[index].listview.camelcase %> extend
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 
-		<%= camelcase %>Helper::addSubmenu('<%= views.standard[index].listview.lowercase %>');
+		<%= component.camelcase %>Helper::addSubmenu('<%= listmvc.name %>');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -54,17 +54,17 @@ class <%= camelcase %>View<%= views.standard[index].listview.camelcase %> extend
 	 */
 	protected function addToolbar()
 	{
-		require_once JPATH_COMPONENT . '/helpers/<%= component %>.php';
+		require_once JPATH_COMPONENT . '/helpers/<%= component.name %>.php';
 
 		$state	= $this->get('State');
-		$canDo	= JHelperContent::getActions('com_<%= component %>'<% if (db.fields.categories) { %>, 'category', $state->get('filter.category_id')<% } %>);
+		$canDo	= JHelperContent::getActions('com_<%= component.name %>'<% if (db.fields.categories) { %>, 'category', $state->get('filter.category_id')<% } %>);
 		$user	= JFactory::getUser();
 
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
 
 		JToolbarHelper::title(JText::_('COM_<%= uppercase %>_MANAGER_<%= views.standard[index].listview.uppercase %>'));
-		<% if (db.fields.categories) { %>if (count($user->getAuthorisedCategories('com_<%= component %>', 'core.create')) > 0)<% } else { %>
+		<% if (db.fields.categories) { %>if (count($user->getAuthorisedCategories('com_<%= component.name %>', 'core.create')) > 0)<% } else { %>
 		if ($canDo->get('core.create'))<% } %>
 		{
 			JToolbarHelper::addNew('<%= views.standard[index].detailview.lowercase %>.add');
@@ -75,21 +75,21 @@ class <%= camelcase %>View<%= views.standard[index].listview.camelcase %> extend
 		}
 		if ($canDo->get('core.edit.state')) {
 
-			JToolbarHelper::publish('<%= views.standard[index].listview.lowercase %>.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('<%= views.standard[index].listview.lowercase %>.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::publish('<%= listmvc.name %>.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('<%= listmvc.name %>.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 
-			JToolbarHelper::archiveList('<%= views.standard[index].listview.lowercase %>.archive');
-			JToolbarHelper::checkin('<%= views.standard[index].listview.lowercase %>.checkin');
+			JToolbarHelper::archiveList('<%= listmvc.name %>.archive');
+			JToolbarHelper::checkin('<%= listmvc.name %>.checkin');
 		}
 		if ($state->get('filter.state') == -2 && $canDo->get('core.delete'))
 		{
-			JToolbarHelper::deleteList('', '<%= views.standard[index].listview.lowercase %>.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolbarHelper::deleteList('', '<%= listmvc.name %>.delete', 'JTOOLBAR_EMPTY_TRASH');
 		} elseif ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::trash('<%= views.standard[index].listview.lowercase %>.trash');
+			JToolbarHelper::trash('<%= listmvc.name %>.trash');
 		}
 		// Add a batch button
-		if ($user->authorise('core.create', 'com_<%= component %>') && $user->authorise('core.edit', 'com_<%= component %>') && $user->authorise('core.edit.state', 'com_<%= component %>'))
+		if ($user->authorise('core.create', 'com_<%= component.name %>') && $user->authorise('core.edit', 'com_<%= component.name %>') && $user->authorise('core.edit.state', 'com_<%= component.name %>'))
 		{
 			JHtml::_('bootstrap.modal', 'collapseModal');
 			$title = JText::_('JTOOLBAR_BATCH');
@@ -100,14 +100,14 @@ class <%= camelcase %>View<%= views.standard[index].listview.camelcase %> extend
 			$dhtml = $layout->render(array('title' => $title));
 			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
-		if ($user->authorise('core.admin', 'com_<%= component %>'))
+		if ($user->authorise('core.admin', 'com_<%= component.name %>'))
 		{
-			JToolbarHelper::preferences('com_<%= component %>');
+			JToolbarHelper::preferences('com_<%= component.name %>');
 		}
 
 		JToolbarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS');
 
-		JHtmlSidebar::setAction('index.php?option=com_<%= component %>&view=<%= views.standard[index].listview.lowercase %>');
+		JHtmlSidebar::setAction('index.php?option=com_<%= component.name %>&view=<%= listmvc.name %>');
 		<% if (db.fields.publish) { %>
 		JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_PUBLISHED'),
@@ -118,7 +118,7 @@ class <%= camelcase %>View<%= views.standard[index].listview.camelcase %> extend
 		JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_CATEGORY'),
 			'filter_category_id',
-			JHtml::_('select.options', JHtml::_('category.options', 'com_<%= component %>'), 'value', 'text', $this->state->get('filter.category_id'))
+			JHtml::_('select.options', JHtml::_('category.options', 'com_<%= component.name %>'), 'value', 'text', $this->state->get('filter.category_id'))
 		);<% } %>
 
 		JHtmlSidebar::addFilter(

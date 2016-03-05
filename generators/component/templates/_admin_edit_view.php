@@ -1,10 +1,10 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage	com_<%= component %>
+ * @subpackage	com_<%= component.name %>
  *
- * @copyright	<%= copyright %>
- * @license		<%= license %>
+ * @copyright	<%= development.copyright %>
+ * @license		<%= development.license %>
  */
 
 defined('_JEXEC') or die;
@@ -13,10 +13,10 @@ defined('_JEXEC') or die;
  * View to edit a <%= views.standard[index].detailview.lowercase %>.
  *
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.5
  */
-class <%= camelcase %>View<%= views.standard[index].detailview.camelcase %> extends JViewLegacy
+class <%= component.camelcase %>View<%= editmvc.camelcase %> extends JViewLegacy
 {
 	protected $state;
 	protected $item;
@@ -56,22 +56,22 @@ class <%= camelcase %>View<%= views.standard[index].detailview.camelcase %> exte
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
 		// Since we don't track these assets at the item level, use the category id.
-		$canDo		= JHelperContent::getActions('com_<%= component %>'<% if (db.fields.categories) { %>, 'category', $this->item->catid<% } %>);
+		$canDo		= JHelperContent::getActions('com_<%= component.name %>'<% if (db.fields.categories) { %>, 'category', $this->item->catid<% } %>);
 
 		JToolbarHelper::title(JText::_('COM_<%= uppercase %>_MANAGER_<%= views.standard[index].detailview.uppercase %>'));
 
 		// If not checked out, can save the item.
-		if (!$checkedOut && ($canDo->get('core.edit')||<% if (db.fields.categories) { %>(count($user->getAuthorisedCategories('com_<%= component %>', 'core.create'))))<% } else { %>($canDo->get('core.create')<% } %>)
+		if (!$checkedOut && ($canDo->get('core.edit')||<% if (db.fields.categories) { %>(count($user->getAuthorisedCategories('com_<%= component.name %>', 'core.create'))))<% } else { %>($canDo->get('core.create')<% } %>)
 		{
 			JToolbarHelper::apply('<%= views.standard[index].detailview.lowercase %>.apply');
 			JToolbarHelper::save('<%= views.standard[index].detailview.lowercase %>.save');
 		}
-		if (!$checkedOut && (count($user->getAuthorisedCategories('com_<%= component %>', 'core.create'))))
+		if (!$checkedOut && (count($user->getAuthorisedCategories('com_<%= component.name %>', 'core.create'))))
 		{
 			JToolbarHelper::save2new('<%= views.standard[index].detailview.lowercase %>.save2new');
 		}
 		// If an existing item, can save to a copy.
-		if (!$isNew && (count($user->getAuthorisedCategories('com_<%= component %>', 'core.create')) > 0))
+		if (!$isNew && (count($user->getAuthorisedCategories('com_<%= component.name %>', 'core.create')) > 0))
 		{
 			JToolbarHelper::save2copy('<%= views.standard[index].detailview.lowercase %>.save2copy');
 		}
@@ -83,7 +83,7 @@ class <%= camelcase %>View<%= views.standard[index].detailview.camelcase %> exte
 		{
 			if ($this->state->params->get('save_history', 0) && $user->authorise('core.edit'))
 			{
-				JToolbarHelper::versions('com_<%= component %>.<%= views.standard[index].detailview.lowercase %>', $this->item->id);
+				JToolbarHelper::versions('com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>', $this->item->id);
 			}
 
 			JToolbarHelper::cancel('<%= views.standard[index].detailview.lowercase %>.cancel', 'JTOOLBAR_CLOSE');

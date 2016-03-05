@@ -1,0 +1,202 @@
+{
+	"plugin": [
+		{
+			"type": "list",
+			"name": "type",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				{
+					"name" : "Authentication",
+					"value" : "authentication"
+				},
+				{
+					"name" : "Captcha",
+					"value" : "captcha"
+				},
+				{
+					"name" : "Content",
+					"value" : "content"
+				},
+				{
+					"name" : "Editors",
+					"value" : "editors"
+				},
+				{
+					"name" : "Extensions",
+					"value" : "extensions"
+				},
+				{
+					"name" : "Finder",
+					"value" : "finder"
+				},
+				{
+					"name" : "Quick Icons",
+					"value" : "quickicon"
+				},
+				{
+					"name" : "System",
+					"value" : "system"
+				},
+				{
+					"name" : "User",
+					"value" : "user"
+				},
+				{
+					"name" : "Component Events (Contact, Installer & Menu Components)",
+					"value" : "component"
+				}
+			]
+		}
+	],
+	"authentication": [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": ["onUserAuthenticate"]
+		}
+	],
+	"captcha" : [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": ["onInit", "onDisplay", "onCheckAnswer"]
+		}
+	],
+	"content" : [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onContentPrepare",
+				"onContentAfterTitle",
+				"onContentBeforeDisplay",
+				"onContentAfterDisplay",
+				"onContentBeforeSave",
+				"onContentAfterSave",
+				"onContentPrepareForm",
+				"onContentPrepareData",
+				"onContentBeforeDelete",
+				"onContentAfterDelete",
+				"onContentChangeState",
+				"onContentSearch",
+				"onContentSearchAreas"
+			]
+		}
+		
+	],
+	"editors" : [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onInit",
+				"onSave",
+				"onSetContent",
+				"onDisplay",
+				"onGetContent",
+				"onGetInsertMethod"
+			]
+		}
+		
+	],
+	"extensions" : [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onExtensionAfterInstall",
+				"onExtensionAfterUnInstall",
+				"onExtensionAfterUpdate",
+				"onExtensionBeforeSave",
+				"onExtensionAfterSave"
+			]
+		}
+		
+	],
+	"finder" : [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onFinderCategoryChangeState",
+				"onFinderChangeState",
+				"onFinderBeforeDelete",
+				"onFinderAfterDelete",
+				"onFinderBeforeSave",
+				"onFinderAfterSave"
+			]
+		}
+		
+	],
+	"quickicons" : [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": ["onGetIcons"]
+		}
+		
+	],
+	"system" : [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onAfterInitialise",
+				"onAfterRoute",
+				"onAfterDispatch",
+				"onAfterRender",
+				"onBeforeRender",
+				"onBeforeCompileHead",
+				"onSearch",
+				"onSearchAreas",
+				"onGetWebServices"
+			]
+		}
+		
+	],
+	"user" : [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onUserBeforeSave",
+				"onUserAfterSave",
+				"onUserBeforeDelete",
+				"onUserAfterDelete",
+				"onUserLogin",
+				"onUserLoginFailure",
+				"onUserAfterLogin",
+				"onUserLogout",
+				"onUserAuthenticate",
+				"onUserAuthorisation",
+				"onUserAuthorisationFailure"				
+			]
+		}
+		
+	],
+	"component" : [
+		{
+			"type": "checkbox",
+			"name": "triggers",
+			"message": "Pick which type of MVC files you would like to create:",
+			"choices": [
+				"onValidateContact",
+				"onSubmitContact",
+				"onInstallerBeforeInstallation",
+				"onInstallerBeforeInstaller",
+				"onInstallerAfterInstaller",
+				"onAfterGetMenuTypeOptions"
+			]
+		}
+		
+	]	
+}

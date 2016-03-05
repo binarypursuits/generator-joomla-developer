@@ -1,10 +1,10 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage	com_<%= component %>
+ * @subpackage	com_<%= component.name %>
  *
- * @copyright	<%= copyright %>
- * @license		<%= license %>
+ * @copyright	<%= development.copyright %>
+ * @license		<%= development.license %>
  */
 
 defined('_JEXEC') or die;
@@ -40,12 +40,12 @@ class <%= component.camelcase %>Controller extends JControllerLegacy
 		$id     = $this->input->getInt('id');
 
 		// Check for edit form.
-		if ($view == '<%= views.standard[0].detailview.lowercase %>' && $layout == 'edit' && !$this->checkEditId('com_<%= component %>.edit.<%= views.standard[0].detailview.lowercase %>', $id)) {
+		if ($view == '<%= views.standard[0].detailview.lowercase %>' && $layout == 'edit' && !$this->checkEditId('com_<%= component.name %>.edit.<%= views.standard[0].detailview.lowercase %>', $id)) {
 
 			// Somehow the person just went to the form - we don't allow that.
 			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_<%= component %>&view=<%= views.standard[0].listview.lowercase %>', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_<%= component.name %>&view=<%= views.standard[0].listview.lowercase %>', false));
 
 			return false;
 		}

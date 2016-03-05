@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" version="3.3" method="upgrade" group="<%= type %>">
-	<name>PLG_<%= uppercaseType %>_<%= camelcase.toUpperCase() %></name>
-	<author><%= author %></author>
-	<creationDate><%= created %></creationDate>
-	<copyright><%= copyright %></copyright>
-	<license><%= license %></license>
-	<authorEmail><%= email %></authorEmail>
-	<authorUrl><%= website %></authorUrl>
-	<version><%= version %></version>
-	<description>PLG_<%= uppercaseType %>_XML_DESCRIPTION</description>
+<extension type="plugin" version="3.3" method="upgrade" group="<%= plugin.type.name %>">
+	<name>PLG_<%= plugin.type.uppercase %>_<%= plugin.uppercase %></name>
+	<author><%= development.author %></author>
+	<creationDate><%= plugin.created %></creationDate>
+	<copyright><%= development.copyright %></copyright>
+	<license><%= development.license %></license>
+	<authorEmail><%= development.email %></authorEmail>
+	<authorUrl><%= development.website %></authorUrl>
+	<version><%= plugin.version %></version>
+	<description>PLG_<%= plugin.type.uppercase %>_<%= plugin.uppercase %>_XML_DESCRIPTION</description>
 
 	<files>
-		<filename plugin="<%= plugin %>"><%= plugin %>.php</filename>
+		<filename plugin="<%= plugin.name %>"><%= plugin.name %>.php</filename>
 		<filename>index.html</filename>
-		<filename>helpers</filename>
-		<folder>tmpl</folder>
-	</files><% if (languagefile === true) { %>
+		<% if (plugin.languagefile) { %><folder>language</folder><% } %>
+	</files><% if (plugin.languagefile) { %>
 
 	<languages>
-		<language tag="<%= languagecode %>"><%= languagecode %>.plg_<%= type %>_<%= plugin %>.ini</language>
-		<language tag="<%= languagecode %>"><%= languagecode %>.plg_<%= type %>_<%= plugin %>.ini.sys</language>
+		<language tag="<%= development.languagecode %>"><%= development.languagecode %>.plg_<%= plugin.type.name %>_<%= plugin.name %>.ini</language>
+		<language tag="<%= development.languagecode %>"><%= development.languagecode %>.plg_<%= plugin.type.name %>_<%= plugin.name %>.ini.sys</language>
 	</languages><% } %>
 
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_WRAPPER" />

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= camelcase %>
+ * @subpackage  com_<%= component.camelcase %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -12,13 +12,13 @@ defined('_JEXEC') or die;
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 
 /**
- * <%= camelcase %> Component Model for a Weblink record
+ * <%= component.camelcase %> Component Model for a Weblink record
  *
  * @package     Joomla.Site
- * @subpackage  com_<%= camelcase %>
+ * @subpackage  com_<%= component.camelcase %>
  * @since       1.5
  */
-class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> extends JModelItem
+class <%= component.camelcase %>Model<%= editmvc.camelcase %> extends JModelItem
 {
 	/**
 	 * Model context string.
@@ -26,7 +26,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 	 * @access	protected
 	 * @var		string
 	 */
-	protected $_context = 'com_<%= camelcase %>.<%= views.standard[index].detailview.lowercase %>';
+	protected $_context = 'com_<%= component.camelcase %>.<%= views.standard[index].detailview.lowercase %>';
 
 	/**
 	 * Method to auto-populate the model state.
@@ -67,7 +67,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 			}
 
 			// Get a level row instance.
-			$table = JTable::getInstance('<%= views.standard[index].detailview.camelcase %>', '<%= camelcase %>Table');
+			$table = JTable::getInstance('<%= editmvc.camelcase %>', '<%= component.camelcase %>Table');
 
 			// Attempt to load the row.
 			if ($table->load($id))
@@ -103,7 +103,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 	 * @return	JTable	A database object
 	 * @since	1.6
 	 */
-	public function getTable($type = '<%= views.standard[index].detailview.camelcase %>', $prefix = '<%= camelcase %>Table', $config = array())
+	public function getTable($type = '<%= editmvc.camelcase %>', $prefix = '<%= component.camelcase %>Table', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -119,7 +119,7 @@ class <%= camelcase %>Model<%= views.standard[index].detailview.camelcase %> ext
 	{
 		if (empty($id))
 		{
-			$id = $this->getState('<%= camelcase %>.id');
+			$id = $this->getState('<%= component.camelcase %>.id');
 		}
 
 		$<%= views.standard[index].detailview.lowercase %> = $this->getTable();

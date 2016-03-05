@@ -2,7 +2,7 @@
 <config>
 
 	<fieldset
-		name="<%= component %>"
+		name="<%= component.name %>"
 		label="COM_<%= uppercase %>_FIELD_CONFIG_LABEL"
 		description="COM_<%= uppercase %>_FIELD_CONFIG_DESC">
 
@@ -18,7 +18,7 @@
 			label="JCONFIG_PERMISSIONS_LABEL"
 			validate="rules"
 			filter="rules"
-			component="com_<%= component %>"
+			component="com_<%= component.name %>"
 			section="component"
 		/>
 

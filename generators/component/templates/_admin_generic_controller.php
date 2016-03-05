@@ -1,10 +1,10 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage	com_<%= component %>
+ * @subpackage	com_<%= component.name %>
  *
- * @copyright	<%= copyright %>
- * @license		<%= license %>
+ * @copyright	<%= development.copyright %>
+ * @license		<%= development.license %>
  */
 
 defined('_JEXEC') or die;
@@ -13,9 +13,9 @@ defined('_JEXEC') or die;
  * Component Controller
  *
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  */
-class <%= camelcase %>Controller<%= genericCamelCase %> extends JControllerLegacy
+class <%= component.camelcase %>Controller<%= genericCamelCase %> extends JControllerLegacy
 {
 
 }

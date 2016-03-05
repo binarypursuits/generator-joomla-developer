@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -13,10 +13,10 @@ defined('_JEXEC') or die;
  * Content categories view.
  *
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.5
  */
-class <%= camelcase %>ViewCategories extends JViewCategories
+class <%= component.camelcase %>ViewCategories extends JViewCategories
 {
 	protected $item = null;
 
@@ -30,7 +30,7 @@ class <%= camelcase %>ViewCategories extends JViewCategories
 	 * @var    string  The name of the extension for the category
 	 * @since  3.2
 	 */
-	protected $extension = 'com_<%= component %>';
+	protected $extension = 'com_<%= component.name %>';
 
 	/**
 	 * @var    string  The name of the view to link individual items to

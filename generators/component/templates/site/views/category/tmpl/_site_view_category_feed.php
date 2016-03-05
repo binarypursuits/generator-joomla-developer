@@ -10,13 +10,13 @@
 defined('_JEXEC') or die;
 
 /**
- * HTML View class for the <%= camelcase %> component
+ * HTML View class for the <%= component.camelcase %> component
  *
  * @package     Joomla.Site
  * @subpackage  com_<%= views.standard[index].detailview.lowercase %>s
  * @since       1.0
  */
-class <%= camelcase %>ViewCategory extends JViewCategoryfeed
+class <%= component.camelcase %>ViewCategory extends JViewCategoryfeed
 {
 	/**
 	 * @var    string  The name of the view to link individual items to

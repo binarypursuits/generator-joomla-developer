@@ -1,5 +1,5 @@
 <% for (var i = 0; i < views.standard.length; i++) { %>
-CREATE TABLE IF NOT EXISTS `#__<%= component %>_<%= views.standard[i].detailview.lowercase %>` (
+CREATE TABLE IF NOT EXISTS `#__<%= component.name %>_<%= views.standard[i].detailview.lowercase %>` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,<% if (views.standard[i].db.fields.categories) { %>
   `catid` int(11) NOT NULL DEFAULT '0',
   `sid` int(11) NOT NULL DEFAULT '0',

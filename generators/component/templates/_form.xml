@@ -34,7 +34,7 @@
 		<field
 			name="catid"
 			type="categoryedit"
-			extension="com_<%= component %>"
+			extension="com_<%= component.name %>"
 			label="JCATEGORY"
 			description="COM_<%= uppercase %>_FIELD_CATEGORY_DESC"
 		/><% } %>

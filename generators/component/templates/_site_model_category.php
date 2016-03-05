@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -10,13 +10,13 @@
 defined('_JEXEC') or die;
 
 /**
- * <%= camelcase %> Component Weblink Model
+ * <%= component.camelcase %> Component Weblink Model
  *
  * @package     Joomla.Site
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  * @since       1.5
  */
-class <%= camelcase %>ModelCategory extends JModelList
+class <%= component.camelcase %>ModelCategory extends JModelList
 {
 	/**
 	 * Category items data
@@ -92,7 +92,7 @@ class <%= camelcase %>ModelCategory extends JModelList
 			}
 			// Get the tags
 			$item->tags = new JHelperTags;
-			$item->tags->getItemTags('com_<%= component %>.<%= views.standard[index].detailview.lowercase %>', $item->id);
+			$item->tags->getItemTags('com_<%= component.name %>.<%= views.standard[index].detailview.lowercase %>', $item->id);
 		}
 
 		return $items;
@@ -190,7 +190,7 @@ class <%= camelcase %>ModelCategory extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
-		$params = JComponentHelper::getParams('com_<%= component %>');
+		$params = JComponentHelper::getParams('com_<%= component.name %>');
 
 		// List state information
 		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'), 'uint');
@@ -220,7 +220,7 @@ class <%= camelcase %>ModelCategory extends JModelList
 		$this->setState('category.id', $id);
 
 		$user = JFactory::getUser();
-		if ((!$user->authorise('core.edit.state', 'com_<%= component %>')) && (!$user->authorise('core.edit', 'com_<%= component %>')))
+		if ((!$user->authorise('core.edit.state', 'com_<%= component.name %>')) && (!$user->authorise('core.edit', 'com_<%= component.name %>')))
 		{
 			// limit to published for people who can't edit or edit.state.
 			$this->setState('filter.state', 1);
@@ -259,7 +259,7 @@ class <%= camelcase %>ModelCategory extends JModelList
 
 			$options = array();
 			$options['countItems'] = $params->get('show_cat_num_links_cat', 1) || $params->get('show_empty_categories', 0);
-			$categories = JCategories::getInstance('<%= camelcase %>', $options);
+			$categories = JCategories::getInstance('<%= component.camelcase %>', $options);
 			$this->_item = $categories->get($this->getState('category.id', 'root'));
 			if (is_object($this->_item))
 			{

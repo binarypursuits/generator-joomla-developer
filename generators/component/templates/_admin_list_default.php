@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -19,11 +19,11 @@ $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$canOrder	= $user->authorise('core.edit.state', <% if (db.fields.categories) { %>'com_<%= component %>.category'<% } %>);
+$canOrder	= $user->authorise('core.edit.state', <% if (db.fields.categories) { %>'com_<%= component.name %>.category'<% } %>);
 $saveOrder	= $listOrder == 'a.ordering';
 if ($saveOrder)
 {
-	$saveOrderingUrl = 'index.php?option=com_<%= component %>&task=<%= views.standard[index].listview.lowercase %>.saveOrderAjax&tmpl=component';
+	$saveOrderingUrl = 'index.php?option=com_<%= component.name %>&task=<%= listmvc.name %>.saveOrderAjax&tmpl=component';
 	JHtml::_('sortablelist.sortable', '<% views.standard[index].detailview.lowercase %>List', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 $sortFields = $this->getSortFields();
@@ -45,7 +45,7 @@ $sortFields = $this->getSortFields();
 		Joomla.tableOrdering(order, dirn, '');
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_<%= component %>&view=<%= views.standard[index].listview.lowercase %>'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_<%= component.name %>&view=<%= listmvc.name %>'); ?>" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
 	<div id="j-sidebar-container" class="span2">
 		<?php echo $this->sidebar; ?>
@@ -129,11 +129,11 @@ $sortFields = $this->getSortFields();
 				<tbody>
 				<?php foreach ($this->items as $i => $item) :
 					$ordering   = ($listOrder == 'a.ordering');
-					$item->cat_link	= JRoute::_('index.php?option=com_categories&extension=com_<%= component %>&task=edit&type=other&cid[]='. $item->catid);
-					$canCreate  = $user->authorise('core.create',     'com_<%= component %>.category.' . $item->catid);
-					$canEdit    = $user->authorise('core.edit',       'com_<%= component %>.category.' . $item->catid);
+					$item->cat_link	= JRoute::_('index.php?option=com_categories&extension=com_<%= component.name %>&task=edit&type=other&cid[]='. $item->catid);
+					$canCreate  = $user->authorise('core.create',     'com_<%= component.name %>.category.' . $item->catid);
+					$canEdit    = $user->authorise('core.edit',       'com_<%= component.name %>.category.' . $item->catid);
 					$canCheckin = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
-					$canChange  = $user->authorise('core.edit.state', 'com_<%= component %>.category.' . $item->catid) && $canCheckin;
+					$canChange  = $user->authorise('core.edit.state', 'com_<%= component.name %>.category.' . $item->catid) && $canCheckin;
 					?>
 					<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid?>">
 						<td class="order nowrap center hidden-phone">
@@ -159,14 +159,14 @@ $sortFields = $this->getSortFields();
 							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 						</td><% if (db.fields.publish) { %>
 						<td class="center">
-							<?php echo JHtml::_('jgrid.published', $item->state, $i, '<%= views.standard[index].listview.lowercase %>.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+							<?php echo JHtml::_('jgrid.published', $item->state, $i, '<%= listmvc.name %>.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 						</td><% } %>
 						<td class="nowrap has-context">
 							<?php if ($item->checked_out) : ?>
-								<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, '<%= views.standard[index].listview.lowercase %>.', $canCheckin); ?>
+								<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, '<%= listmvc.name %>.', $canCheckin); ?>
 							<?php endif; ?>
 							<?php if ($canEdit) : ?>
-								<a href="<?php echo JRoute::_('index.php?option=com_<%= component %>&task=weblink.edit&id='.(int) $item->id); ?>">
+								<a href="<?php echo JRoute::_('index.php?option=com_<%= component.name %>&task=weblink.edit&id='.(int) $item->id); ?>">
 									<?php echo $this->escape($item->title); ?></a>
 							<?php else : ?>
 									<?php echo $this->escape($item->title); ?>

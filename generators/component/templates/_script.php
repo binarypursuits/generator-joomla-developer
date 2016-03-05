@@ -3,9 +3,9 @@
 defined('_JEXEC') or die('Restricted access');
  
 /**
- * Script file of <%= camelcase %> component
+ * Script file of <%= component.camelcase %> component
  */
-class com_<%= camelcase %>InstallerScript
+class com_<%= component.camelcase %>InstallerScript
 {
 	/**
 	 * method to install the component
@@ -15,7 +15,7 @@ class com_<%= camelcase %>InstallerScript
 	function install($parent) 
 	{
 		// $parent is the class calling this method
-		$parent->getParent()->setRedirectURL('index.php?option=com_<%= component %>');
+		$parent->getParent()->setRedirectURL('index.php?option=com_<%= component.name %>');
 	}
  
 	/**

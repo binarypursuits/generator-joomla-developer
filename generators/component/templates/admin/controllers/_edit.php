@@ -1,10 +1,10 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage	com_<%= component %>
+ * @subpackage	com_<%= component.name %>
  *
- * @copyright	<%= copyright %>
- * @license		<%= license %>
+ * @copyright	<%= development.copyright %>
+ * @license		<%= development.license %>
  */
 
 defined('_JEXEC') or die;
@@ -13,9 +13,9 @@ defined('_JEXEC') or die;
  * Component Controller
  *
  * @package     Joomla.Administrator
- * @subpackage  com_<%= component %>
+ * @subpackage  com_<%= component.name %>
  */
-class <%= camelcase %>Controller<%= views.standard[index].detailview.camelcase %> extends JControllerForm
+class <%= component.camelcase %>Controller<%= editmvc.camelcase %> extends JControllerForm
 {
 	/**
 	 * Method override to check if you can add a new record.
@@ -63,7 +63,7 @@ class <%= camelcase %>Controller<%= views.standard[index].detailview.camelcase %
 	 * @since   1.6
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
-	{<% if (db.fields.categories) { %>
+	{<% if (fields.categories) { %>
 		$user = JFactory::getUser();
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 		$categoryId = 0;
@@ -101,10 +101,10 @@ class <%= camelcase %>Controller<%= views.standard[index].detailview.camelcase %
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Set the model
-		$model = $this->getModel('<%= views.standard[index].detailview.camelcase %>', '', array());
+		$model = $this->getModel('<%= editmvc.camelcase %>', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(JRoute::_('index.php?option=com_<%= component %>&view=<%= views.standard[index].listview.lowercase %>' . $this->getRedirectToListAppend(), false));
+		$this->setRedirect(JRoute::_('index.php?option=com_<%= component.name %>&view=<%= listmvc.name %>' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}
