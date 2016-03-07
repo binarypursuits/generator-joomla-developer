@@ -541,24 +541,66 @@ class Plg<%= plugin.type.camelcase %><%= plugin.camelcase %> extends JPlugin
 	public function onGetIcons($context)
 	{
 	}<% } %><% if (methods.indexOf('onAfterInitialise') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onAfterRoute') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onAfterDispatch') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onAfterRender') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onBeforeRender') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onBeforeCompileHead') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onSearch') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onSearchArea') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onGetWebServices') > -1) { %>
 	
-	<% } %><% if (methods.indexOf('onUserBeforeSave') > -1) { %>
+	/**
+	 * After initialise.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 * @deprecate  4.0  Obsolete
+	 */
+	public function onAfterInitialise()
+	{
+	}<% } %><% if (methods.indexOf('onAfterRoute') > -1) { %>
+	/**
+	 * Add the canonical uri to the head.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	public function onAfterRoute()
+	{
+	}<% } %><% if (methods.indexOf('onAfterDispatch') > -1) { %>
+	/**
+	 * Method to catch the onAfterDispatch event.
+	 *
+	 * This is where we setup the click-through content highlighting for.
+	 * The highlighting is done with JavaScript so we just
+	 * need to check a few parameters and the JHtml behavior will do the rest.
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   2.5
+	 */
+	public function onAfterDispatch()
+	{
+	}<% } %><% if (methods.indexOf('onAfterRender') > -1) { %>
+		
+	/**
+	 * Convert the site URL to fit to the HTTP request.
+	 *
+	 * @return  void
+	 */
+	public function onAfterRender()
+	{
+	}<% } %><% if (methods.indexOf('onBeforeRender') > -1) { %>
+	public function onBeforeRender()
+	{
+	}<% } %><% if (methods.indexOf('onBeforeCompileHead') > -1) { %>
+	public function onBeforeCompileHead()
+	{
+	}<% } %><% if (methods.indexOf('onSearch') > -1) { %>
+	public function onSearch()
+	{
+	}<% } %><% if (methods.indexOf('onSearchArea') > -1) { %>
+	public function onSearchArea()
+	{
+	}<% } %><% if (methods.indexOf('onGetWebServices') > -1) { %>
+	public function onGetWebServices()
+	{
+	}<% } %><% if (methods.indexOf('onUserBeforeSave') > -1) { %>
 		
 	/**
 	 * Method is called before user data is stored in the database
@@ -735,12 +777,19 @@ class Plg<%= plugin.type.camelcase %><%= plugin.camelcase %> extends JPlugin
 	public function onSubmitContact(&$contact, &$data)
 	{
 	}<% } %><% if (methods.indexOf('onInstallerBeforeInstallation') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onInstallerBeforeInstaller') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onInstallerAfterInstaller') > -1) { %>
-		
-	<% } %><% if (methods.indexOf('onAfterGetMenuTypeOptions') > -1) { %>
+	public function onInstallerBeforeInstallation()
+	{
+	}<% } %><% if (methods.indexOf('onInstallerBeforeInstaller') > -1) { %>
 	
-	<% } %>
+	public function onInstallerBeforeInstaller()
+	{
+	}<% } %><% if (methods.indexOf('onInstallerAfterInstaller') > -1) { %>
+	
+	public function onInstallerAfterInstaller()
+	{
+	}<% } %><% if (methods.indexOf('onAfterGetMenuTypeOptions') > -1) { %>
+	
+	public function onAfterGetMenuTypeOptions()
+	{
+	}<% } %>
 }
