@@ -3,6 +3,31 @@
 module.exports = function (grunt) {
 
     grunt.config.merge({
+		
+		/**
+		 * Configure LESS task options
+		 * 
+		 * target -> stylesheet file to be created
+		 * source -> entry point for LESS files
+		 * map -> stylesheet map file for debugging
+		 */
+		less: {
+			target: "<%= joomla.root %>/media/<% paths.template %>/css/style.css",
+			source: "<%= joomla.root %>/media/<% paths.template %>/less/main.less",
+			map: "<%= joomla.root %>/media/<% paths.template %>/css/style.css.map"
+		},
+		
+		/**
+		 * Configure UnCSS task options
+		 * 
+		 * source -> stylesheet file to be created
+		 * target -> target HTML files to validate
+		 */
+		uncss: {
+			source: "",
+			target: []
+		},
+		
         arc: {
             livereload: {
                 port: 35729
