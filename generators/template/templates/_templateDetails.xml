@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="template" version="<%= template.version %>" client="site" method="upgrade">
+	<name>tpl_<%= template.name %></name>
+	<author><%= development.author %></author>
+	<creationDate><%= template.created %></creationDate>
+	<copyright><%= development.copyright %></copyright>
+	<license><%= development.license %></license>
+	<authorEmail><%= development.email %></authorEmail>
+	<authorUrl><%= development.website %></authorUrl>
+	<version><%= template.version %></version>
+	<description>TPL_<%= template.language %>_XML_DESCRIPTION</description>
+
+	<files>
+		<filename>component.php</filename>
+		<filename>error.php</filename>
+		<filename>favicon.ico</filename>
+		<filename>index.php</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>template_preview.png</filename>
+		<filename>template_thumbnail.png</filename>
+		<folder>css</folder>
+		<folder>html</folder>
+		<folder>images</folder>
+		<folder>img</folder>
+		<folder>js</folder>
+		<folder>language</folder>
+		<folder>less</folder>
+	</files>
+        <positions>
+            <position>main-menu</position>
+            <position>side-column</position>
+            <position>footer</position>
+        </positions>
+        <% if (development.languagefile === true) { %>
+
+	<languages>
+		<language tag="<%= development.languageCode %>"><%= development.languageCode %>.tpl_<%= template.name %>.ini</language>
+	</languages><% } %>
+
+	<config>
+	</config>
+        
+</extension>
+
+

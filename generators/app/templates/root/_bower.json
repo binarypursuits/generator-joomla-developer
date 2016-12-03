@@ -1,0 +1,6 @@
+{
+    "name": "package",
+    "version": "<%= joomla.version %>",
+    "dependencies": {}
+}
+

@@ -1,0 +1,48 @@
+{
+    "name": "<%= joomla.name %>",
+    "version": "<%= joomla.version %>",
+    "description": "Generic Description",
+    "author": {
+        "name": "<%= development.author %>",
+        "email": "<%= development.email %>"
+    },
+    "devDependencies": {
+        "async": "^0.9.0",
+        "cross-spawn": "^0.2.3",
+        "grunt": "^0.4.5",
+        "grunt-azure": "^0.1.2",
+        "grunt-contrib-clean": "^0.6.0",
+        "grunt-contrib-compress": "^0.13.0",
+		"grunt-contrib-less": "^1.3.9",
+        "grunt-contrib-connect": "^0.9.0",
+        "grunt-contrib-copy": "^0.7.0",
+        "grunt-contrib-csslint": "^0.4.0",
+        "grunt-contrib-cssmin": "^0.11.0",
+        "grunt-contrib-jshint": "^0.11.0",
+        "grunt-contrib-uglify": "^0.7.0",
+        "grunt-contrib-watch": "^0.6.1",
+        "grunt-contrib-yuidoc": "^0.10.0",
+        "grunt-text-replace": "^0.4.0",
+        "grunt-concurrent": "^1.0.0",
+        "grunt-mysql-dump-import": "^1.0.1",
+        "grunt-pagespeed": "^1.0.0",
+        "grunt-perfbudget": "^0.1.6",
+        "grunt-phpcs": "^0.4.0",
+        "grunt-phpdocumentor": "^0.4.1",
+        "grunt-mocha": "^0.4.15",
+		"grunt-uncss": "^0.5.2",
+        "load-grunt-tasks": "^3.4.0",
+        "js-base64": "^2.1.7",
+        "mysql": "^2.6.2",
+        "ngrok": "^0.1.99",
+        "uncss": "^0.12.1"
+    },
+    "engines": {
+        "node": ">=0.8.0"
+    },
+    "licenses": [
+        {
+            "type": "MIT"
+        }
+    ]
+}

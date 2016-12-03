@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+
+	<fieldset
+		name="<%= component.name %>"
+		label="COM_<%= component.uppercase %>_FIELD_CONFIG_LABEL"
+		description="COM_<%= component.uppercase %>_FIELD_CONFIG_DESC">
+
+	</fieldset><% if (fields.acl) { %>
+
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC">
+
+		<field name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			validate="rules"
+			filter="rules"
+			component="com_<%= component.name %>"
+			section="component"
+		/>
+
+	</fieldset><% } %>
+
+</config>

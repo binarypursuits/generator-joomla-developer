@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.3" method="upgrade">
+	<name>com_<%= component.name %></name>
+	<author><%= author %></author>
+	<creationDate><%= created %></creationDate>
+	<copyright><%= copyright %></copyright>
+	<license><%= license %></license>
+	<authorEmail><%= email %></authorEmail>
+	<authorUrl><%= website %></authorUrl>
+	<version><%= version %></version>
+	<description>COM_<%= uppercase %>_XML_DESCRIPTION</description>
+	<% if (db) { %>
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall><% } %><% if (languagefile) { %>
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB/en-GB.com_<%= component.name %>.ini</language>
+	</languages><% } %>
+	<% if (media) { %>
+	<media destination="com_<%= component.name %>">
+		<% if (media.css) { %><folder>css</folder><% } %>
+		<% if (media.js) { %><folder>js</folder><% } %>
+		<% if (media.images) { %><folder>images</folder><% } %>
+		<% if (media.fonts) { %><folder>fonts</folder><% } %>
+		<filename>index.html</filename>
+	</media>
+	<% } %>
+	<files folder="site">
+		<filename>controller.php</filename>
+		<filename><%= component.name %>.php</filename>
+		<filename>index.html</filename>
+		<folder>controllers</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+	<administration>
+		<menu>COM_<%= uppercase %></menu><% if (views.standard.length > 0) { %>
+		<submenu><% for (var i = 0; i < views.standard.length; i++) { %>
+			<menu view="<%= views.standard[i].listview.lowercase %>">COM_<%= uppercase %>_SUBMENU_<%= views.standard[i].listview.uppercase %></menu><% } %><% if (db.fields.categories) { %>
+			<menu link="option=com_categories&amp;extension=com_<%= component.name %>" view="categories" alt="<%= component.camelcase %>/Categories">com_<%= component.name %>_categories</menu><% } %>
+		</submenu><% } %>
+		<files folder="admin">
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename><%= component.name %>.php</filename>
+			<filename>index.html</filename>
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>layouts</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files><% if (languagefile === true) { %>
+		<languages>
+			<language tag="<%= languagecode %>"><%= languagecode %>.com_<%= component.name %>.ini</language>
+			<language tag="<%= languagecode %>"><%= languagecode %>.com_<%= component.name %>.sys.ini</language>
+		</languages><% } %>
+	</administration>
+	<% if (updateserver) { %>
+	<updateservers>
+		<server type="extension" priority="1" name="Extension Update Site">http://jsitepoint.com/update/components/com_alpha/extension.xml</server> <!-- useful for single extensions -->
+		<server type="collection" priority="2" name="Collection Update Site">http://jsitepoint.com/update/update.xml</server><!-- useful for collections of extensions -->
+	</updateservers><% } %>
+</extension>
+
+
