@@ -75,8 +75,5 @@
     "yeoman-generator": "^0.21.1",
     "yosay": "^0.3.0"
   },
-  "devDependencies": {},
-  "peerDependencies": {
-    "grunt": "^0.4.5"
-  }
+  "devDependencies": {}
 }
